@@ -7,6 +7,7 @@ import br.com.estudos.produtos.seeder.Seeder;
 import br.com.estudos.produtos.servico.*;
 import br.com.estudos.produtos.view.*;
 
+
 public class Aplicacao implements Navegacao {
     private final CategoriaRepository categorias = new CategoriaRepositoryMemoria();
     private final ProdutoRepository produtos = new ProdutoRepositoryMemoria();
@@ -14,9 +15,11 @@ public class Aplicacao implements Navegacao {
     private final CategoriaServico categoriaServico = new CategoriaServico(categorias, produtos);
     private final ProdutoServico produtoServico = new ProdutoServico(produtos, categorias);
     private final CalculoPrecoServico calculoServico = new CalculoPrecoServico(produtos, historicos);
+    private final UsuarioRepository usuarios = new UsuarioRepositoryMemoria();
+    private final UsuarioServico usuarioServico = new UsuarioServico(usuarios);
 
     public void iniciar() {
-        new Seeder(categoriaServico, produtoServico, calculoServico).executar();
+        new Seeder(categoriaServico, produtoServico, calculoServico, usuarioServico).executar();
         PrincipalFrame view = new PrincipalFrame();
         new PrincipalPresenter(view, this);
         view.exibir();
@@ -64,4 +67,3 @@ public class Aplicacao implements Navegacao {
         view.exibir();
     }
 }
-
