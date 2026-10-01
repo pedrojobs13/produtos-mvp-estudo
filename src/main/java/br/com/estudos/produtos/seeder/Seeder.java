@@ -5,19 +5,23 @@ import br.com.estudos.produtos.servico.CalculoPrecoServico;
 import br.com.estudos.produtos.servico.CategoriaServico;
 import br.com.estudos.produtos.servico.ProdutoServico;
 import java.time.LocalDate;
+import br.com.estudos.produtos.servico.UsuarioServico;
 
 public class Seeder {
     private final CategoriaServico categorias;
     private final ProdutoServico produtos;
     private final CalculoPrecoServico calculo;
+    private final UsuarioServico usuarios;
 
-    public Seeder(CategoriaServico categorias, ProdutoServico produtos, CalculoPrecoServico calculo) {
+    public Seeder(CategoriaServico categorias, ProdutoServico produtos, CalculoPrecoServico calculo, UsuarioServico usuarios) {
         this.categorias = categorias;
         this.produtos = produtos;
         this.calculo = calculo;
+        this.usuarios = usuarios;
     }
 
     public void executar() {
+        usuarios.criarAdministradorInicial();
         Categoria educacao = categorias.salvar(null, "Educação", 25.0);
         Categoria papelaria = categorias.salvar(null, "Papelaria", 30.0);
         Categoria alimentacao = categorias.salvar(null, "Alimentação", 22.0);
