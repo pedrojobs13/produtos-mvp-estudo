@@ -1,13 +1,37 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.presenter;
 
-import br.com.estudos.produtos.view.contrato.PrincipalView;
+import br.com.estudos.produtos.view.contrato.IPrincipalView;
 
 public class PrincipalPresenter {
-    public PrincipalPresenter(PrincipalView view, Navegacao navegacao) {
-        view.aoIncluir(navegacao::incluirProduto);
-        view.aoBuscar(navegacao::buscarProdutos);
-        view.aoCategorias(navegacao::categorias);
-        view.aoCalcular(navegacao::calcular);
+    public PrincipalPresenter(IPrincipalView view, INavegacao navegacao) {
+        view.aoIncluir(new Runnable() {
+            @Override
+            public void run() {
+                navegacao.incluirProduto();
+            }
+        });
+        view.aoBuscar(new Runnable() {
+            @Override
+            public void run() {
+                navegacao.buscarProdutos();
+            }
+        });
+        view.aoCategorias(new Runnable() {
+            @Override
+            public void run() {
+                navegacao.categorias();
+            }
+        });
+        view.aoCalcular(new Runnable() {
+            @Override
+            public void run() {
+                navegacao.calcular();
+            }
+        });
     }
 }
 

@@ -1,33 +1,41 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.servico;
 
 import br.com.estudos.produtos.model.HistoricoPreco;
 import br.com.estudos.produtos.model.Produto;
-import br.com.estudos.produtos.repositorio.HistoricoPrecoRepository;
-import br.com.estudos.produtos.repositorio.ProdutoRepository;
+import br.com.estudos.produtos.repositorio.IHistoricoPrecoRepository;
+import br.com.estudos.produtos.repositorio.IProdutoRepository;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CalculoPrecoServico {
-    private final ProdutoRepository produtos;
-    private final HistoricoPrecoRepository historicos;
+    private IProdutoRepository produtos;
+    private IHistoricoPrecoRepository historicos;
     private LocalDate ultimoCalculo;
 
-    public CalculoPrecoServico(ProdutoRepository produtos, HistoricoPrecoRepository historicos) {
+    public CalculoPrecoServico(IProdutoRepository produtos, IHistoricoPrecoRepository historicos) {
         this.produtos = produtos;
         this.historicos = historicos;
     }
 
-    public LocalDate getUltimoCalculo() { return ultimoCalculo; }
+    public LocalDate getUltimoCalculo() {
+        return ultimoCalculo;
+    }
 
     public List<Produto> calcular(LocalDate data) {
         if (data == null) {
             throw new RegraNegocioException("Informe a data do cálculo.");
         }
-        if (ultimoCalculo != null && ChronoUnit.DAYS.between(ultimoCalculo, data) < 10) {
-            throw new RegraNegocioException("O novo cálculo exige pelo menos 10 dias. Próxima data permitida: "
-                    + ultimoCalculo.plusDays(10).format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        if (ultimoCalculo != null) {
+            LocalDate proximaData = ultimoCalculo.plusDays(10);
+            if (data.isBefore(proximaData)) {
+                throw new RegraNegocioException("O novo cálculo exige pelo menos 10 dias. Próxima data permitida: "
+                        + proximaData.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            }
         }
         List<Produto> lista = produtos.listar();
         List<HistoricoPreco> novos = new ArrayList<>();
@@ -51,7 +59,7 @@ public class CalculoPrecoServico {
         Validacao.numero(percentual, "Percentual de lucro", true);
         double valor = custo * (1 + percentual / 100);
         double centavos = valor * 100;
-        if (!Double.isFinite(centavos) || centavos >= Long.MAX_VALUE) {
+        if (Double.isNaN(centavos) || Double.isInfinite(centavos) || centavos >= Long.MAX_VALUE) {
             throw new RegraNegocioException("O preço calculado excede o limite suportado.");
         }
         return Math.round(centavos) / 100.0;

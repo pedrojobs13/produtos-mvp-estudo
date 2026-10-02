@@ -1,30 +1,73 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.view;
 
-import br.com.estudos.produtos.view.contrato.CalculoView;
+import br.com.estudos.produtos.view.contrato.ICalculoView;
 
-public class CalculoDialog extends javax.swing.JDialog implements CalculoView {
+public class CalculoDialog extends javax.swing.JDialog implements ICalculoView {
     public CalculoDialog() {
         super((java.awt.Frame) null, true);
         initComponents();
         setLocationRelativeTo(null);
     }
 
-    @Override public void exibir() { setVisible(true); }
-    @Override public void fechar() { dispose(); }
-    @Override public void mensagem(String texto) {
+
+    @Override
+    public void exibir() {
+        setVisible(true);
+    }
+
+
+    @Override
+    public void fechar() {
+        dispose();
+    }
+
+    @Override
+    public void mensagem(String texto) {
         javax.swing.JOptionPane.showMessageDialog(this, texto, "Atenção", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
-    @Override public boolean confirmar(String texto) {
+
+
+    @Override
+    public boolean confirmar(String texto) {
         return javax.swing.JOptionPane.showConfirmDialog(this, texto, "Confirmação",
                 javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION;
     }
 
-    @Override public String getData() { return txtData.getText(); }
-    @Override public void mostrarData(String data) { txtData.setText(data); }
-    @Override public void mostrarAviso(String texto) { lblAviso.setText(texto); }
-    @Override public void mostrarResultados(String[][] linhas) { Tabelas.preencher(tabela, linhas); }
-    @Override public void aoCalcular(Runnable acao) { btnCalcular.addActionListener(e -> acao.run()); }
-    @Override public void aoFechar(Runnable acao) { btnFechar.addActionListener(e -> acao.run()); }
+
+    @Override
+    public String getData() {
+        return txtData.getText();
+    }
+
+
+    @Override
+    public void mostrarData(String data) {
+        txtData.setText(data);
+    }
+
+    @Override
+    public void mostrarAviso(String texto) {
+        lblAviso.setText(texto);
+    }
+
+    @Override
+    public void mostrarResultados(String[][] linhas) {
+        Tabelas.preencher(tabela, linhas);
+    }
+
+    @Override
+    public void aoCalcular(Runnable acao) {
+        Eventos.adicionarAcao(btnCalcular, acao);
+    }
+
+    @Override
+    public void aoFechar(Runnable acao) {
+        Eventos.adicionarAcao(btnFechar, acao);
+    }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {//GEN-BEGIN:initComponents

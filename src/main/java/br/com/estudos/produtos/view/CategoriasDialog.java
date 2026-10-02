@@ -1,8 +1,12 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.view;
 
-import br.com.estudos.produtos.view.contrato.CategoriasView;
+import br.com.estudos.produtos.view.contrato.ICategoriasView;
 
-public class CategoriasDialog extends javax.swing.JDialog implements CategoriasView {
+public class CategoriasDialog extends javax.swing.JDialog implements ICategoriasView {
     public CategoriasDialog() {
         super((java.awt.Frame) null, true);
         initComponents();
@@ -10,24 +14,61 @@ public class CategoriasDialog extends javax.swing.JDialog implements CategoriasV
         setLocationRelativeTo(null);
     }
 
-    @Override public void exibir() { setVisible(true); }
-    @Override public void fechar() { dispose(); }
-    @Override public void mensagem(String texto) {
+
+    @Override
+    public void exibir() {
+        setVisible(true);
+    }
+
+
+    @Override
+    public void fechar() {
+        dispose();
+    }
+
+    @Override
+    public void mensagem(String texto) {
         javax.swing.JOptionPane.showMessageDialog(this, texto, "Atenção", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
-    @Override public boolean confirmar(String texto) {
+
+
+    @Override
+    public boolean confirmar(String texto) {
         return javax.swing.JOptionPane.showConfirmDialog(this, texto, "Confirmação",
                 javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION;
     }
 
-    @Override public String getNome() { return txtNome.getText(); }
-    @Override public String getPercentual() { return txtPercentual.getText(); }
-    @Override public void mostrarDados(String nome, String percentual) { txtNome.setText(nome); txtPercentual.setText(percentual); }
-    @Override public void mostrarCategorias(String[][] linhas) { Tabelas.preencher(tabela, linhas); }
-    @Override public void selecionarLinha(int indice) {
+
+    @Override
+    public String getNome() {
+        return txtNome.getText();
+    }
+
+
+    @Override
+    public String getPercentual() {
+        return txtPercentual.getText();
+    }
+
+    @Override
+    public void mostrarDados(String nome, String percentual) {
+        txtNome.setText(nome);
+        txtPercentual.setText(percentual);
+    }
+
+    @Override
+    public void mostrarCategorias(String[][] linhas) {
+        Tabelas.preencher(tabela, linhas);
+    }
+
+    @Override
+    public void selecionarLinha(int indice) {
         if (indice < 0) tabela.clearSelection(); else tabela.setRowSelectionInterval(indice, indice);
     }
-    @Override public void definirModo(boolean editando, boolean selecionado, String descricao) {
+
+
+    @Override
+    public void definirModo(boolean editando, boolean selecionado, String descricao) {
         lblModo.setText("Modo: " + descricao);
         txtNome.setEditable(editando); txtPercentual.setEditable(editando);
         tabela.setEnabled(!editando);
@@ -37,16 +78,48 @@ public class CategoriasDialog extends javax.swing.JDialog implements CategoriasV
         setDefaultCloseOperation(editando ? javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE
                 : javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
-    @Override public void aoSelecionar(Runnable acao) {
-        tabela.getSelectionModel().addListSelectionListener(e -> { if (!e.getValueIsAdjusting()) acao.run(); });
+
+
+    @Override
+    public void aoSelecionar(Runnable acao) {
+        Eventos.adicionarSelecao(tabela, acao);
     }
-    @Override public int getLinha() { return tabela.getSelectedRow(); }
-    @Override public void aoNovo(Runnable acao) { btnNovo.addActionListener(e -> acao.run()); }
-    @Override public void aoEditar(Runnable acao) { btnEditar.addActionListener(e -> acao.run()); }
-    @Override public void aoExcluir(Runnable acao) { btnExcluir.addActionListener(e -> acao.run()); }
-    @Override public void aoSalvar(Runnable acao) { btnSalvar.addActionListener(e -> acao.run()); }
-    @Override public void aoCancelar(Runnable acao) { btnCancelar.addActionListener(e -> acao.run()); }
-    @Override public void aoFechar(Runnable acao) { btnFechar.addActionListener(e -> acao.run()); }
+
+
+    @Override
+    public int getLinha() {
+        return tabela.getSelectedRow();
+    }
+
+    @Override
+    public void aoNovo(Runnable acao) {
+        Eventos.adicionarAcao(btnNovo, acao);
+    }
+
+    @Override
+    public void aoEditar(Runnable acao) {
+        Eventos.adicionarAcao(btnEditar, acao);
+    }
+
+    @Override
+    public void aoExcluir(Runnable acao) {
+        Eventos.adicionarAcao(btnExcluir, acao);
+    }
+
+    @Override
+    public void aoSalvar(Runnable acao) {
+        Eventos.adicionarAcao(btnSalvar, acao);
+    }
+
+    @Override
+    public void aoCancelar(Runnable acao) {
+        Eventos.adicionarAcao(btnCancelar, acao);
+    }
+
+    @Override
+    public void aoFechar(Runnable acao) {
+        Eventos.adicionarAcao(btnFechar, acao);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -162,7 +235,6 @@ public class CategoriasDialog extends javax.swing.JDialog implements CategoriasV
 
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
             },
             new String [] {
                 "Categoria", "Percentual de lucro (%)"

@@ -1,31 +1,64 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.view;
 
-import br.com.estudos.produtos.view.contrato.ProdutoDetalheView;
+import br.com.estudos.produtos.view.contrato.IProdutoDetalheView;
 
-public class ProdutoDetalheDialog extends javax.swing.JDialog implements ProdutoDetalheView {
+public class ProdutoDetalheDialog extends javax.swing.JDialog implements IProdutoDetalheView {
     public ProdutoDetalheDialog() {
         super((java.awt.Frame) null, true);
         initComponents();
         setLocationRelativeTo(null);
     }
 
-    @Override public void exibir() { setVisible(true); }
-    @Override public void fechar() { dispose(); }
-    @Override public void mensagem(String texto) {
+
+    @Override
+    public void exibir() {
+        setVisible(true);
+    }
+
+
+    @Override
+    public void fechar() {
+        dispose();
+    }
+
+    @Override
+    public void mensagem(String texto) {
         javax.swing.JOptionPane.showMessageDialog(this, texto, "Atenção", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
-    @Override public boolean confirmar(String texto) {
+
+
+    @Override
+    public boolean confirmar(String texto) {
         return javax.swing.JOptionPane.showConfirmDialog(this, texto, "Confirmação",
                 javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION;
     }
 
-    @Override public void mostrarDados(String nome, String custo, String categoria, String margem, String venda) {
+
+    @Override
+    public void mostrarDados(String nome, String custo, String categoria, String margem, String venda) {
         txtNome.setText(nome); txtCusto.setText(custo); txtCategoria.setText(categoria);
         txtMargem.setText(margem); txtVenda.setText(venda);
     }
-    @Override public void aoEditar(Runnable acao) { btnEditar.addActionListener(e -> acao.run()); }
-    @Override public void aoHistorico(Runnable acao) { btnHistorico.addActionListener(e -> acao.run()); }
-    @Override public void aoFechar(Runnable acao) { btnFechar.addActionListener(e -> acao.run()); }
+
+
+    @Override
+    public void aoEditar(Runnable acao) {
+        Eventos.adicionarAcao(btnEditar, acao);
+    }
+
+    @Override
+    public void aoHistorico(Runnable acao) {
+        Eventos.adicionarAcao(btnHistorico, acao);
+    }
+
+    @Override
+    public void aoFechar(Runnable acao) {
+        Eventos.adicionarAcao(btnFechar, acao);
+    }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {//GEN-BEGIN:initComponents

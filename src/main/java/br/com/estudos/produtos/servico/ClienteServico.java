@@ -1,13 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.servico;
 
 import br.com.estudos.produtos.model.Cliente;
-import br.com.estudos.produtos.repositorio.ClienteRepository;
+import br.com.estudos.produtos.repositorio.IClienteRepository;
 import java.util.List;
 
 public class ClienteServico {
-    private final ClienteRepository clientes;
+    private IClienteRepository clientes;
 
-    public ClienteServico(ClienteRepository clientes) {
+    public ClienteServico(IClienteRepository clientes) {
         this.clientes = clientes;
     }
 
@@ -16,13 +20,15 @@ public class ClienteServico {
     }
 
     public Cliente obter(int id) {
-        return clientes.buscarPorId(id)
-                .orElseThrow(() -> new RegraNegocioException("Cliente não encontrado. "));
+        Cliente cliente = clientes.buscarPorId(id);
+        if (cliente == null) {
+            throw new RegraNegocioException("Cliente não encontrado.");
+        }
+        return cliente;
     }
 
     public Cliente salvar(Integer id, String nome, String logradouro,
             String bairro, String cidade, String uf) {
-
         String nomeValido = Validacao.nome(nome, "Nome do cliente ");
         String logradouroValido = Validacao.nome(logradouro, "Logradouro");
         String bairroValido = Validacao.nome(bairro, "Bairro");

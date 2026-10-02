@@ -1,8 +1,12 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.view;
 
-import br.com.estudos.produtos.view.contrato.HistoricoView;
+import br.com.estudos.produtos.view.contrato.IHistoricoView;
 
-public class HistoricoDialog extends javax.swing.JDialog implements HistoricoView {
+public class HistoricoDialog extends javax.swing.JDialog implements IHistoricoView {
     public HistoricoDialog() {
         super((java.awt.Frame) null, true);
         initComponents();
@@ -10,19 +14,46 @@ public class HistoricoDialog extends javax.swing.JDialog implements HistoricoVie
         setLocationRelativeTo(null);
     }
 
-    @Override public void exibir() { setVisible(true); }
-    @Override public void fechar() { dispose(); }
-    @Override public void mensagem(String texto) {
+
+    @Override
+    public void exibir() {
+        setVisible(true);
+    }
+
+
+    @Override
+    public void fechar() {
+        dispose();
+    }
+
+    @Override
+    public void mensagem(String texto) {
         javax.swing.JOptionPane.showMessageDialog(this, texto, "Atenção", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
-    @Override public boolean confirmar(String texto) {
+
+
+    @Override
+    public boolean confirmar(String texto) {
         return javax.swing.JOptionPane.showConfirmDialog(this, texto, "Confirmação",
                 javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION;
     }
 
-    @Override public void mostrarProduto(String nome, String categoria) { txtProduto.setText(nome); txtCategoria.setText(categoria); }
-    @Override public void mostrarHistorico(String[][] linhas) { Tabelas.preencher(tabela, linhas); }
-    @Override public void aoFechar(Runnable acao) { btnFechar.addActionListener(e -> acao.run()); }
+
+    @Override
+    public void mostrarProduto(String nome, String categoria) {
+        txtProduto.setText(nome); txtCategoria.setText(categoria);
+    }
+
+
+    @Override
+    public void mostrarHistorico(String[][] linhas) {
+        Tabelas.preencher(tabela, linhas);
+    }
+
+    @Override
+    public void aoFechar(Runnable acao) {
+        Eventos.adicionarAcao(btnFechar, acao);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -93,7 +124,6 @@ public class HistoricoDialog extends javax.swing.JDialog implements HistoricoVie
 
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
             },
             new String [] {
                 "Data", "Percentual de lucro (%)", "Preço de venda"

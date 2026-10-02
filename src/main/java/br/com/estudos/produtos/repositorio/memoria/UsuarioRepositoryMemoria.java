@@ -1,14 +1,16 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.repositorio.memoria;
 
 import br.com.estudos.produtos.model.Usuario;
-import br.com.estudos.produtos.repositorio.UsuarioRepository;
-import java.util.LinkedHashMap;
+import br.com.estudos.produtos.repositorio.IUsuarioRepository;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-public class UsuarioRepositoryMemoria implements UsuarioRepository {
-    private final Map<Integer, Usuario> dados = new LinkedHashMap<>();
+public class UsuarioRepositoryMemoria implements IUsuarioRepository {
+    private List<Usuario> dados = new ArrayList<>();
     private int proximoId = 1;
 
     @Override
@@ -16,23 +18,43 @@ public class UsuarioRepositoryMemoria implements UsuarioRepository {
         return proximoId++;
     }
 
+
     @Override
     public void salvar(Usuario usuario) {
-        dados.put(usuario.getId(), usuario);
+        for (int i = 0; i < dados.size(); i++) {
+            if (dados.get(i).getId() == usuario.getId()) {
+                dados.set(i, usuario);
+                return;
+            }
+        }
+        dados.add(usuario);
     }
+
 
     @Override
     public void excluir(int id) {
-        dados.remove(id);
+        for (int i = 0; i < dados.size(); i++) {
+            if (dados.get(i).getId() == id) {
+                dados.remove(i);
+                return;
+            }
+        }
     }
 
+
     @Override
-    public Optional<Usuario> buscarPorId(int id) {
-        return Optional.ofNullable(dados.get(id));
+    public Usuario buscarPorId(int id) {
+        for (Usuario usuario : dados) {
+            if (usuario.getId() == id) {
+                return usuario;
+            }
+        }
+        return null;
     }
+
 
     @Override
     public List<Usuario> listar() {
-        return List.copyOf(dados.values());
+        return new ArrayList<>(dados);
     }
 }

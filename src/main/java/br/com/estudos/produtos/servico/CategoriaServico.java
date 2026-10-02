@@ -1,24 +1,34 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.servico;
 
 import br.com.estudos.produtos.model.Categoria;
-import br.com.estudos.produtos.repositorio.CategoriaRepository;
-import br.com.estudos.produtos.repositorio.ProdutoRepository;
+import br.com.estudos.produtos.model.Produto;
+import br.com.estudos.produtos.repositorio.ICategoriaRepository;
+import br.com.estudos.produtos.repositorio.IProdutoRepository;
 import java.util.List;
 
 public class CategoriaServico {
-    private final CategoriaRepository categorias;
-    private final ProdutoRepository produtos;
+    private ICategoriaRepository categorias;
+    private IProdutoRepository produtos;
 
-    public CategoriaServico(CategoriaRepository categorias, ProdutoRepository produtos) {
+    public CategoriaServico(ICategoriaRepository categorias, IProdutoRepository produtos) {
         this.categorias = categorias;
         this.produtos = produtos;
     }
 
-    public List<Categoria> listar() { return categorias.listar(); }
+    public List<Categoria> listar() {
+        return categorias.listar();
+    }
 
     public Categoria obter(int id) {
-        return categorias.buscarPorId(id)
-                .orElseThrow(() -> new RegraNegocioException("Categoria não encontrada."));
+        Categoria categoria = categorias.buscarPorId(id);
+        if (categoria == null) {
+            throw new RegraNegocioException("Categoria não encontrada.");
+        }
+        return categoria;
     }
 
     public Categoria salvar(Integer id, String nome, Double percentual) {
@@ -43,8 +53,12 @@ public class CategoriaServico {
 
     public void excluir(int id) {
         obter(id);
-        boolean possuiProdutos = produtos.listar().stream()
-                .anyMatch(p -> p.getCategoria().getId() == id);
+        boolean possuiProdutos = false;
+        for (Produto produto : produtos.listar()) {
+            if (produto.getCategoria().getId() == id) {
+                possuiProdutos = true;
+            }
+        }
         if (possuiProdutos) {
             throw new RegraNegocioException("A categoria não pode ser excluída: existem produtos associados.");
         }

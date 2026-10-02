@@ -1,14 +1,18 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.presenter;
 
 import br.com.estudos.produtos.model.HistoricoPreco;
 import br.com.estudos.produtos.model.Produto;
-import br.com.estudos.produtos.repositorio.HistoricoPrecoRepository;
+import br.com.estudos.produtos.repositorio.IHistoricoPrecoRepository;
 import br.com.estudos.produtos.servico.ProdutoServico;
-import br.com.estudos.produtos.view.contrato.HistoricoView;
+import br.com.estudos.produtos.view.contrato.IHistoricoView;
 import java.util.List;
 
 public class HistoricoPresenter {
-    public HistoricoPresenter(HistoricoView view, ProdutoServico produtos, HistoricoPrecoRepository historicos, int id) {
+    public HistoricoPresenter(IHistoricoView view, ProdutoServico produtos, IHistoricoPrecoRepository historicos, int id) {
         Produto produto = produtos.obter(id);
         view.mostrarProduto(produto.getNome(), produto.getCategoria().getNome());
         List<HistoricoPreco> registros = historicos.listarPorProduto(id);
@@ -19,7 +23,12 @@ public class HistoricoPresenter {
                     Formatos.numero(h.getPrecoVenda())};
         }
         view.mostrarHistorico(linhas);
-        view.aoFechar(view::fechar);
+        view.aoFechar(new Runnable() {
+            @Override
+            public void run() {
+                view.fechar();
+            }
+        });
     }
 }
 

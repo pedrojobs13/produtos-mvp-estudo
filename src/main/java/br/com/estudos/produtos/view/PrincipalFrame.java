@@ -1,34 +1,67 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.view;
 
-import br.com.estudos.produtos.view.contrato.PrincipalView;
+import br.com.estudos.produtos.view.contrato.IPrincipalView;
 
-public class PrincipalFrame extends javax.swing.JFrame implements PrincipalView {
+public class PrincipalFrame extends javax.swing.JFrame implements IPrincipalView {
     public PrincipalFrame() {
-        
         initComponents();
         pack();
         setLocationRelativeTo(null);
     }
 
-    @Override public void exibir() { setVisible(true); }
-    @Override public void fechar() { dispose(); }
-    @Override public void mensagem(String texto) {
+
+    @Override
+    public void exibir() {
+        setVisible(true);
+    }
+
+
+    @Override
+    public void fechar() {
+        dispose();
+    }
+
+    @Override
+    public void mensagem(String texto) {
         javax.swing.JOptionPane.showMessageDialog(this, texto, "Atenção", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
-    @Override public boolean confirmar(String texto) {
+
+
+    @Override
+    public boolean confirmar(String texto) {
         return javax.swing.JOptionPane.showConfirmDialog(this, texto, "Confirmação",
                 javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION;
     }
 
-    @Override public void aoIncluir(Runnable acao) { itemIncluir.addActionListener(e -> acao.run()); }
-    @Override public void aoBuscar(Runnable acao) { itemBuscar.addActionListener(e -> acao.run()); }
-    @Override public void aoCategorias(Runnable acao) { itemCategorias.addActionListener(e -> acao.run()); }
-    @Override public void aoCalcular(Runnable acao) { itemCalcular.addActionListener(e -> acao.run()); }
+
+    @Override
+    public void aoIncluir(Runnable acao) {
+        Eventos.adicionarAcao(itemIncluir, acao);
+    }
+
+
+    @Override
+    public void aoBuscar(Runnable acao) {
+        Eventos.adicionarAcao(itemBuscar, acao);
+    }
+
+    @Override
+    public void aoCategorias(Runnable acao) {
+        Eventos.adicionarAcao(itemCategorias, acao);
+    }
+
+    @Override
+    public void aoCalcular(Runnable acao) {
+        Eventos.adicionarAcao(itemCalcular, acao);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         areaCentral = new javax.swing.JPanel();
         barraMenu = new javax.swing.JMenuBar();
         menuDados = new javax.swing.JMenu();

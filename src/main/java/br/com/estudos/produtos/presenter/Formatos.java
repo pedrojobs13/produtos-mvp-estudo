@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.presenter;
 
 import br.com.estudos.produtos.model.Produto;
@@ -9,12 +13,13 @@ import java.time.format.ResolverStyle;
 import java.util.List;
 import java.util.Locale;
 
-public final class Formatos {
+public class Formatos {
     private static final Locale BR = Locale.forLanguageTag("pt-BR");
     private static final DateTimeFormatter DATA = DateTimeFormatter.ofPattern("dd/MM/uuuu")
             .withResolverStyle(ResolverStyle.STRICT);
 
-    private Formatos() { }
+    private Formatos() {
+    }
 
     public static String numero(Double valor) {
         return valor == null ? "" : String.format(BR, "%.2f", valor);
@@ -27,18 +32,24 @@ public final class Formatos {
         }
         try {
             double numero = Double.parseDouble(valor.replace(',', '.'));
-            if (!Double.isFinite(numero)) throw new NumberFormatException();
+        if (Double.isNaN(numero) || Double.isInfinite(numero)) {
+            throw new NumberFormatException();
+        }
             return numero;
         } catch (NumberFormatException e) {
             throw new RegraNegocioException("Valor inválido para " + campo + ".");
         }
     }
 
-    public static String data(LocalDate data) { return data.format(DATA); }
+    public static String data(LocalDate data) {
+        return data.format(DATA);
+    }
 
     public static LocalDate lerData(String texto) {
+        if (texto == null || texto.trim().isEmpty()) {
+            throw new RegraNegocioException("Informe uma data válida no formato dd/MM/aaaa.");
+        }
         try {
-            if (texto == null) throw new DateTimeParseException("Data vazia", "", 0);
             return LocalDate.parse(texto.trim(), DATA);
         } catch (DateTimeParseException e) {
             throw new RegraNegocioException("Informe uma data válida no formato dd/MM/aaaa.");

@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.model;
 
 public class Produto {
@@ -13,12 +17,29 @@ public class Produto {
         atualizar(nome, precoCusto, categoria);
     }
 
-    public int getId() { return id; }
-    public String getNome() { return nome; }
-    public Double getPrecoCusto() { return precoCusto; }
-    public Categoria getCategoria() { return categoria; }
-    public Double getMargemAtual() { return margemAtual; }
-    public Double getPrecoVendaAtual() { return precoVendaAtual; }
+    public int getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Double getPrecoCusto() {
+        return precoCusto;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public Double getMargemAtual() {
+        return margemAtual;
+    }
+
+    public Double getPrecoVendaAtual() {
+        return precoVendaAtual;
+    }
 
     public void atualizar(String nome, Double precoCusto, Categoria categoria) {
         this.nome = nome;

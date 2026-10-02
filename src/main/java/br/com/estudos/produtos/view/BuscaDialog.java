@@ -1,8 +1,12 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.view;
 
-import br.com.estudos.produtos.view.contrato.BuscaView;
+import br.com.estudos.produtos.view.contrato.IBuscaView;
 
-public class BuscaDialog extends javax.swing.JDialog implements BuscaView {
+public class BuscaDialog extends javax.swing.JDialog implements IBuscaView {
     public BuscaDialog() {
         super((java.awt.Frame) null, true);
         initComponents();
@@ -10,28 +14,82 @@ public class BuscaDialog extends javax.swing.JDialog implements BuscaView {
         setLocationRelativeTo(null);
     }
 
-    @Override public void exibir() { setVisible(true); }
-    @Override public void fechar() { dispose(); }
-    @Override public void mensagem(String texto) {
+
+    @Override
+    public void exibir() {
+        setVisible(true);
+    }
+
+
+    @Override
+    public void fechar() {
+        dispose();
+    }
+
+    @Override
+    public void mensagem(String texto) {
         javax.swing.JOptionPane.showMessageDialog(this, texto, "Atenção", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
-    @Override public boolean confirmar(String texto) {
+
+
+    @Override
+    public boolean confirmar(String texto) {
         return javax.swing.JOptionPane.showConfirmDialog(this, texto, "Confirmação",
                 javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION;
     }
 
-    @Override public String getTexto() { return txtBusca.getText(); }
-    @Override public boolean isBuscaCategoria() { return cmbBusca.getSelectedIndex() == 1; }
-    @Override public void mostrarProdutos(String[][] linhas) { Tabelas.preencher(tabela, linhas); }
-    @Override public void habilitarVisualizar(boolean habilitado) { btnVisualizar.setEnabled(habilitado); }
-    @Override public void aoSelecionar(Runnable acao) {
-        tabela.getSelectionModel().addListSelectionListener(e -> { if (!e.getValueIsAdjusting()) acao.run(); });
+
+    @Override
+    public String getTexto() {
+        return txtBusca.getText();
     }
-    @Override public int getLinha() { return tabela.getSelectedRow(); }
-    @Override public void aoBuscar(Runnable acao) { btnBuscar.addActionListener(e -> acao.run()); }
-    @Override public void aoNovo(Runnable acao) { btnNovo.addActionListener(e -> acao.run()); }
-    @Override public void aoVisualizar(Runnable acao) { btnVisualizar.addActionListener(e -> acao.run()); }
-    @Override public void aoFechar(Runnable acao) { btnFechar.addActionListener(e -> acao.run()); }
+
+
+    @Override
+    public boolean isBuscaCategoria() {
+        return cmbBusca.getSelectedIndex() == 1;
+    }
+
+    @Override
+    public void mostrarProdutos(String[][] linhas) {
+        Tabelas.preencher(tabela, linhas);
+    }
+
+    @Override
+    public void habilitarVisualizar(boolean habilitado) {
+        btnVisualizar.setEnabled(habilitado);
+    }
+
+    @Override
+    public void aoSelecionar(Runnable acao) {
+        Eventos.adicionarSelecao(tabela, acao);
+    }
+
+
+    @Override
+    public int getLinha() {
+        return tabela.getSelectedRow();
+    }
+
+    @Override
+    public void aoBuscar(Runnable acao) {
+        Eventos.adicionarAcao(btnBuscar, acao);
+    }
+
+    @Override
+    public void aoNovo(Runnable acao) {
+        Eventos.adicionarAcao(btnNovo, acao);
+    }
+
+    @Override
+    public void aoVisualizar(Runnable acao) {
+        Eventos.adicionarAcao(btnVisualizar, acao);
+    }
+
+    @Override
+    public void aoFechar(Runnable acao) {
+        Eventos.adicionarAcao(btnFechar, acao);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -104,7 +162,6 @@ public class BuscaDialog extends javax.swing.JDialog implements BuscaView {
 
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
             },
             new String [] {
                 "Nome do produto", "Preço de custo", "Categoria", "Margem de lucro (%)", "Preço de venda"

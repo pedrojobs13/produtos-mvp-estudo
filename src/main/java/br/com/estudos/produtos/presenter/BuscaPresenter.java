@@ -1,29 +1,58 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.presenter;
 
 import br.com.estudos.produtos.model.Produto;
 import br.com.estudos.produtos.servico.ProdutoServico;
-import br.com.estudos.produtos.view.contrato.BuscaView;
+import br.com.estudos.produtos.view.contrato.IBuscaView;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BuscaPresenter {
-    private final BuscaView view;
+    private final IBuscaView view;
     private final ProdutoServico produtos;
-    private List<Produto> resultados = List.of();
+    private List<Produto> resultados = new ArrayList<>();
 
-    public BuscaPresenter(BuscaView view, ProdutoServico produtos, Navegacao navegacao) {
+    public BuscaPresenter(IBuscaView view, ProdutoServico produtos, INavegacao navegacao) {
         this.view = view;
         this.produtos = produtos;
-        view.aoBuscar(this::buscar);
-        view.aoSelecionar(() -> view.habilitarVisualizar(view.getLinha() >= 0));
-        view.aoNovo(() -> { navegacao.incluirProduto(); buscar(); });
-        view.aoVisualizar(() -> {
-            int linha = view.getLinha();
-            if (linha >= 0 && linha < resultados.size()) {
-                navegacao.visualizarProduto(resultados.get(linha).getId());
+        view.aoBuscar(new Runnable() {
+            @Override
+            public void run() {
                 buscar();
             }
         });
-        view.aoFechar(view::fechar);
+        view.aoSelecionar(new Runnable() {
+            @Override
+            public void run() {
+                view.habilitarVisualizar(view.getLinha() >= 0);
+            }
+        });
+        view.aoNovo(new Runnable() {
+            @Override
+            public void run() {
+                navegacao.incluirProduto();
+                buscar();
+            }
+        });
+        view.aoVisualizar(new Runnable() {
+            @Override
+            public void run() {
+                int linha = view.getLinha();
+                if (linha >= 0 && linha < resultados.size()) {
+                    navegacao.visualizarProduto(resultados.get(linha).getId());
+                    buscar();
+                }
+            }
+        });
+        view.aoFechar(new Runnable() {
+            @Override
+            public void run() {
+                view.fechar();
+            }
+        });
         buscar();
     }
 

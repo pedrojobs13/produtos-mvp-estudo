@@ -1,21 +1,41 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.presenter;
 
 import br.com.estudos.produtos.model.Produto;
 import br.com.estudos.produtos.servico.ProdutoServico;
-import br.com.estudos.produtos.view.contrato.ProdutoDetalheView;
+import br.com.estudos.produtos.view.contrato.IProdutoDetalheView;
 
 public class ProdutoDetalhePresenter {
-    private final ProdutoDetalheView view;
+    private final IProdutoDetalheView view;
     private final ProdutoServico produtos;
     private final int id;
 
-    public ProdutoDetalhePresenter(ProdutoDetalheView view, ProdutoServico produtos, Navegacao navegacao, int id) {
+    public ProdutoDetalhePresenter(IProdutoDetalheView view, ProdutoServico produtos, INavegacao navegacao, int id) {
         this.view = view;
         this.produtos = produtos;
         this.id = id;
-        view.aoEditar(() -> { navegacao.editarProduto(id); atualizar(); });
-        view.aoHistorico(() -> navegacao.historicoProduto(id));
-        view.aoFechar(view::fechar);
+        view.aoEditar(new Runnable() {
+            @Override
+            public void run() {
+                navegacao.editarProduto(id);
+                atualizar();
+            }
+        });
+        view.aoHistorico(new Runnable() {
+            @Override
+            public void run() {
+                navegacao.historicoProduto(id);
+            }
+        });
+        view.aoFechar(new Runnable() {
+            @Override
+            public void run() {
+                view.fechar();
+            }
+        });
         atualizar();
     }
 

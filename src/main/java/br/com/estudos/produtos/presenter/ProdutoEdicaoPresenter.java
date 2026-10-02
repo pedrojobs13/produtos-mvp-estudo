@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.presenter;
 
 import br.com.estudos.produtos.model.Categoria;
@@ -5,22 +9,26 @@ import br.com.estudos.produtos.model.Produto;
 import br.com.estudos.produtos.servico.CategoriaServico;
 import br.com.estudos.produtos.servico.ProdutoServico;
 import br.com.estudos.produtos.servico.RegraNegocioException;
-import br.com.estudos.produtos.view.contrato.ProdutoEdicaoView;
+import br.com.estudos.produtos.view.contrato.IProdutoEdicaoView;
 import java.util.List;
 
 public class ProdutoEdicaoPresenter {
-    private final ProdutoEdicaoView view;
-    private final ProdutoServico produtos;
-    private final List<Categoria> categorias;
-    private final Integer id;
+    private IProdutoEdicaoView view;
+    private ProdutoServico produtos;
+    private List<Categoria> categorias;
+    private Integer id;
 
-    public ProdutoEdicaoPresenter(ProdutoEdicaoView view, ProdutoServico produtos,
+    public ProdutoEdicaoPresenter(IProdutoEdicaoView view, ProdutoServico produtos,
             CategoriaServico categorias, Integer id) {
         this.view = view;
         this.produtos = produtos;
         this.categorias = categorias.listar();
         this.id = id;
-        view.mostrarCategorias(this.categorias.stream().map(Categoria::getNome).toArray(String[]::new));
+        String[] nomesCategorias = new String[this.categorias.size()];
+        for (int i = 0; i < this.categorias.size(); i++) {
+            nomesCategorias[i] = this.categorias.get(i).getNome();
+        }
+        view.mostrarCategorias(nomesCategorias);
         if (id == null) {
             view.mostrarDados("", "", -1, "", "");
         } else {
@@ -29,8 +37,18 @@ public class ProdutoEdicaoPresenter {
             view.mostrarDados(p.getNome(), Formatos.numero(p.getPrecoCusto()), indice,
                     Formatos.numero(p.getMargemAtual()), Formatos.numero(p.getPrecoVendaAtual()));
         }
-        view.aoSalvar(this::salvar);
-        view.aoCancelar(view::fechar);
+        view.aoSalvar(new Runnable() {
+            @Override
+            public void run() {
+                salvar();
+            }
+        });
+        view.aoCancelar(new Runnable() {
+            @Override
+            public void run() {
+                view.fechar();
+            }
+        });
     }
 
     private void salvar() {

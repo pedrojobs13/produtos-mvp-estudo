@@ -1,34 +1,80 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.view;
 
-import br.com.estudos.produtos.view.contrato.ProdutoEdicaoView;
+import br.com.estudos.produtos.view.contrato.IProdutoEdicaoView;
 
-public class ProdutoEdicaoDialog extends javax.swing.JDialog implements ProdutoEdicaoView {
+public class ProdutoEdicaoDialog extends javax.swing.JDialog implements IProdutoEdicaoView {
     public ProdutoEdicaoDialog() {
         super((java.awt.Frame) null, true);
         initComponents();
         setLocationRelativeTo(null);
     }
 
-    @Override public void exibir() { setVisible(true); }
-    @Override public void fechar() { dispose(); }
-    @Override public void mensagem(String texto) {
+
+    @Override
+    public void exibir() {
+        setVisible(true);
+    }
+
+
+    @Override
+    public void fechar() {
+        dispose();
+    }
+
+    @Override
+    public void mensagem(String texto) {
         javax.swing.JOptionPane.showMessageDialog(this, texto, "Atenção", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
-    @Override public boolean confirmar(String texto) {
+
+
+    @Override
+    public boolean confirmar(String texto) {
         return javax.swing.JOptionPane.showConfirmDialog(this, texto, "Confirmação",
                 javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION;
     }
 
-    @Override public String getNome() { return txtNome.getText(); }
-    @Override public String getCusto() { return txtCusto.getText(); }
-    @Override public int getCategoriaIndice() { return cmbCategoria.getSelectedIndex(); }
-    @Override public void mostrarCategorias(String[] nomes) { cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(nomes)); }
-    @Override public void mostrarDados(String nome, String custo, int categoria, String margem, String venda) {
+
+    @Override
+    public String getNome() {
+        return txtNome.getText();
+    }
+
+
+    @Override
+    public String getCusto() {
+        return txtCusto.getText();
+    }
+
+    @Override
+    public int getCategoriaIndice() {
+        return cmbCategoria.getSelectedIndex();
+    }
+
+    @Override
+    public void mostrarCategorias(String[] nomes) {
+        cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(nomes));
+    }
+
+    @Override
+    public void mostrarDados(String nome, String custo, int categoria, String margem, String venda) {
         txtNome.setText(nome); txtCusto.setText(custo); cmbCategoria.setSelectedIndex(categoria);
         txtMargem.setText(margem); txtVenda.setText(venda);
     }
-    @Override public void aoSalvar(Runnable acao) { btnSalvar.addActionListener(e -> acao.run()); }
-    @Override public void aoCancelar(Runnable acao) { btnCancelar.addActionListener(e -> acao.run()); }
+
+
+    @Override
+    public void aoSalvar(Runnable acao) {
+        Eventos.adicionarAcao(btnSalvar, acao);
+    }
+
+    @Override
+    public void aoCancelar(Runnable acao) {
+        Eventos.adicionarAcao(btnCancelar, acao);
+    }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {//GEN-BEGIN:initComponents

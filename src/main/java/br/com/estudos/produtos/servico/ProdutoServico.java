@@ -1,26 +1,36 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package br.com.estudos.produtos.servico;
 
 import br.com.estudos.produtos.model.Categoria;
 import br.com.estudos.produtos.model.Produto;
-import br.com.estudos.produtos.repositorio.CategoriaRepository;
-import br.com.estudos.produtos.repositorio.ProdutoRepository;
+import br.com.estudos.produtos.repositorio.ICategoriaRepository;
+import br.com.estudos.produtos.repositorio.IProdutoRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class ProdutoServico {
-    private final ProdutoRepository produtos;
-    private final CategoriaRepository categorias;
+    private IProdutoRepository produtos;
+    private ICategoriaRepository categorias;
 
-    public ProdutoServico(ProdutoRepository produtos, CategoriaRepository categorias) {
+    public ProdutoServico(IProdutoRepository produtos, ICategoriaRepository categorias) {
         this.produtos = produtos;
         this.categorias = categorias;
     }
 
-    public List<Produto> listar() { return produtos.listar(); }
+    public List<Produto> listar() {
+        return produtos.listar();
+    }
 
     public Produto obter(int id) {
-        return produtos.buscarPorId(id)
-                .orElseThrow(() -> new RegraNegocioException("Produto não encontrado."));
+        Produto produto = produtos.buscarPorId(id);
+        if (produto == null) {
+            throw new RegraNegocioException("Produto não encontrado.");
+        }
+        return produto;
     }
 
     public Produto salvar(Integer id, String nome, Double custo, Integer categoriaId) {
@@ -29,8 +39,10 @@ public class ProdutoServico {
         if (categoriaId == null) {
             throw new RegraNegocioException("Selecione uma categoria.");
         }
-        Categoria categoria = categorias.buscarPorId(categoriaId)
-                .orElseThrow(() -> new RegraNegocioException("A categoria informada não existe."));
+        Categoria categoria = categorias.buscarPorId(categoriaId);
+        if (categoria == null) {
+            throw new RegraNegocioException("A categoria informada não existe.");
+        }
         Produto produto;
         if (id == null) {
             produto = new Produto(produtos.proximoId(), nomeValido, custo, categoria);
@@ -44,10 +56,19 @@ public class ProdutoServico {
 
     public List<Produto> buscar(String texto, boolean porCategoria) {
         String termo = texto == null ? "" : texto.trim().toLowerCase(Locale.ROOT);
-        return produtos.listar().stream().filter(p -> {
-            String campo = porCategoria ? p.getCategoria().getNome() : p.getNome();
-            return campo.toLowerCase(Locale.ROOT).contains(termo);
-        }).toList();
+        List<Produto> encontrados = new ArrayList<>();
+        for (Produto produto : produtos.listar()) {
+            String campo;
+            if (porCategoria) {
+                campo = produto.getCategoria().getNome();
+            } else {
+                campo = produto.getNome();
+            }
+            if (campo.toLowerCase(Locale.ROOT).contains(termo)) {
+                encontrados.add(produto);
+            }
+        }
+        return encontrados;
     }
 }
 
