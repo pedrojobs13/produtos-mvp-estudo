@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalculoPrecoServico {
-    private IProdutoRepository produtos;
-    private IHistoricoPrecoRepository historicos;
+    private IProdutoRepository produtoRepository;
+    private IHistoricoPrecoRepository historicoPrecoRepository;
     private LocalDate ultimoCalculo;
 
-    public CalculoPrecoServico(IProdutoRepository produtos, IHistoricoPrecoRepository historicos) {
-        this.produtos = produtos;
-        this.historicos = historicos;
+    public CalculoPrecoServico(IProdutoRepository produtoRepository, IHistoricoPrecoRepository historicoPrecoRepository) {
+        this.produtoRepository = produtoRepository;
+        this.historicoPrecoRepository = historicoPrecoRepository;
     }
 
     public LocalDate getUltimoCalculo() {
@@ -37,7 +37,7 @@ public class CalculoPrecoServico {
                         + proximaData.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             }
         }
-        List<Produto> lista = produtos.listar();
+        List<Produto> lista = produtoRepository.listarTodos();
         List<HistoricoPreco> novos = new ArrayList<>();
         // Primeiro valida todos os resultados, antes de alterar produtos ou históricos.
         for (Produto produto : lista) {
@@ -49,7 +49,7 @@ public class CalculoPrecoServico {
             HistoricoPreco registro = novos.get(i);
             lista.get(i).atualizarPreco(registro.getPercentualLucro(), registro.getPrecoVenda());
         }
-        historicos.salvarTodos(novos);
+        historicoPrecoRepository.salvarTodos(novos);
         ultimoCalculo = data;
         return lista;
     }
@@ -65,4 +65,3 @@ public class CalculoPrecoServico {
         return Math.round(centavos) / 100.0;
     }
 }
-

@@ -14,7 +14,7 @@ public interface IClienteRepository {
 
     void excluir(int id);
 
-    Cliente buscarPorId(int id);
+    Cliente consultar(int id);
 
-    List<Cliente> listar();
+    List<Cliente> listarTodos();
 }

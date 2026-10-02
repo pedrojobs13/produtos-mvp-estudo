@@ -10,7 +10,6 @@ import java.util.List;
 public interface IProdutoRepository {
     int proximoId();
     void salvar(Produto produto);
-    Produto buscarPorId(int id);
-    List<Produto> listar();
+    Produto consultar(int id);
+    List<Produto> listarTodos();
 }
-

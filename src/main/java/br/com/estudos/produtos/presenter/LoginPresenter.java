@@ -11,18 +11,18 @@ import br.com.estudos.produtos.view.contrato.ILoginView;
 
 public class LoginPresenter {
     private ILoginView view;
-    private AutenticacaoServico autenticacao;
+    private AutenticacaoServico service;
     private ILoginNavegacao navegacao;
 
-    public LoginPresenter(ILoginView view, AutenticacaoServico autenticacao, ILoginNavegacao navegacao) {
+    public LoginPresenter(ILoginView view, AutenticacaoServico service, ILoginNavegacao navegacao) {
         this.view = view;
-        this.autenticacao = autenticacao;
+        this.service = service;
         this.navegacao = navegacao;
 
         view.aoEntrar(new Runnable() {
             @Override
             public void run() {
-                entrar();
+                autentica();
             }
         });
 
@@ -34,13 +34,13 @@ public class LoginPresenter {
         });
     }
 
-    private void entrar() {
+    private void autentica() {
         try {
-            Usuario usuario = autenticacao.autenticar(view.getIdentificacao(), view.getSenha());
+            Usuario usuario = service.autentica(view.getIdentificacao(), view.getSenha());
             view.fechar();
             navegacao.abrirPrincipal(usuario);
         } catch (RegraNegocioException e) {
-            view.mensagem(e.getMessage());
+            view.exibirMensagem(e.getMessage());
         }
     }
 }

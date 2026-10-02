@@ -4,10 +4,14 @@
  */
 package br.com.estudos.produtos.presenter;
 
+import br.com.estudos.produtos.model.Usuario;
 import br.com.estudos.produtos.view.contrato.IPrincipalView;
 
 public class PrincipalPresenter {
-    public PrincipalPresenter(IPrincipalView view, INavegacao navegacao) {
+    public PrincipalPresenter(IPrincipalView view, INavegacao navegacao, Usuario usuario) {
+        view.exibirUsuario(usuario.getNome(), usuario.getPerfil());
+        view.configurarPerfil(usuario.getPerfil());
+
         view.aoIncluir(new Runnable() {
             @Override
             public void run() {
@@ -30,6 +34,14 @@ public class PrincipalPresenter {
             @Override
             public void run() {
                 navegacao.calcular();
+            }
+        });
+
+        view.aoSair(new Runnable() {
+            @Override
+            public void run() {
+                view.fechar();
+                navegacao.sair();
             }
         });
     }

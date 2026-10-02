@@ -13,20 +13,20 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProdutoServico {
-    private IProdutoRepository produtos;
-    private ICategoriaRepository categorias;
+    private IProdutoRepository produtoRepository;
+    private ICategoriaRepository categoriaRepository;
 
-    public ProdutoServico(IProdutoRepository produtos, ICategoriaRepository categorias) {
-        this.produtos = produtos;
-        this.categorias = categorias;
+    public ProdutoServico(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository) {
+        this.produtoRepository = produtoRepository;
+        this.categoriaRepository = categoriaRepository;
     }
 
-    public List<Produto> listar() {
-        return produtos.listar();
+    public List<Produto> listarTodos() {
+        return produtoRepository.listarTodos();
     }
 
-    public Produto obter(int id) {
-        Produto produto = produtos.buscarPorId(id);
+    public Produto consultar(int id) {
+        Produto produto = produtoRepository.consultar(id);
         if (produto == null) {
             throw new RegraNegocioException("Produto não encontrado.");
         }
@@ -39,25 +39,25 @@ public class ProdutoServico {
         if (categoriaId == null) {
             throw new RegraNegocioException("Selecione uma categoria.");
         }
-        Categoria categoria = categorias.buscarPorId(categoriaId);
+        Categoria categoria = categoriaRepository.consultar(categoriaId);
         if (categoria == null) {
             throw new RegraNegocioException("A categoria informada não existe.");
         }
         Produto produto;
         if (id == null) {
-            produto = new Produto(produtos.proximoId(), nomeValido, custo, categoria);
+            produto = new Produto(produtoRepository.proximoId(), nomeValido, custo, categoria);
         } else {
-            produto = obter(id);
+            produto = consultar(id);
             produto.atualizar(nomeValido, custo, categoria);
         }
-        produtos.salvar(produto);
+        produtoRepository.salvar(produto);
         return produto;
     }
 
     public List<Produto> buscar(String texto, boolean porCategoria) {
         String termo = texto == null ? "" : texto.trim().toLowerCase(Locale.ROOT);
         List<Produto> encontrados = new ArrayList<>();
-        for (Produto produto : produtos.listar()) {
+        for (Produto produto : produtoRepository.listarTodos()) {
             String campo;
             if (porCategoria) {
                 campo = produto.getCategoria().getNome();
@@ -71,4 +71,3 @@ public class ProdutoServico {
         return encontrados;
     }
 }
-

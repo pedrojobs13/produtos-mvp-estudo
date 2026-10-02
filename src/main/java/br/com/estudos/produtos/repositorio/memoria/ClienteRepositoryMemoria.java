@@ -43,7 +43,7 @@ public class ClienteRepositoryMemoria implements IClienteRepository {
 
 
     @Override
-    public Cliente buscarPorId(int id) {
+    public Cliente consultar(int id) {
         for (Cliente cliente : dados) {
             if (cliente.getId() == id) {
                 return cliente;
@@ -54,7 +54,7 @@ public class ClienteRepositoryMemoria implements IClienteRepository {
 
 
     @Override
-    public List<Cliente> listar() {
+    public List<Cliente> listarTodos() {
         return new ArrayList<>(dados);
     }
 }

@@ -10,12 +10,12 @@ import br.com.estudos.produtos.view.contrato.IProdutoDetalheView;
 
 public class ProdutoDetalhePresenter {
     private final IProdutoDetalheView view;
-    private final ProdutoServico produtos;
+    private final ProdutoServico service;
     private final int id;
 
-    public ProdutoDetalhePresenter(IProdutoDetalheView view, ProdutoServico produtos, INavegacao navegacao, int id) {
+    public ProdutoDetalhePresenter(IProdutoDetalheView view, ProdutoServico service, INavegacao navegacao, int id) {
         this.view = view;
-        this.produtos = produtos;
+        this.service = service;
         this.id = id;
         view.aoEditar(new Runnable() {
             @Override
@@ -40,9 +40,8 @@ public class ProdutoDetalhePresenter {
     }
 
     private void atualizar() {
-        Produto p = produtos.obter(id);
+        Produto p = service.consultar(id);
         view.mostrarDados(p.getNome(), Formatos.numero(p.getPrecoCusto()), p.getCategoria().getNome(),
                 Formatos.numero(p.getMargemAtual()), Formatos.numero(p.getPrecoVendaAtual()));
     }
 }
-

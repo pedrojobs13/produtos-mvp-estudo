@@ -14,15 +14,15 @@ import java.util.List;
 
 public class ProdutoEdicaoPresenter {
     private IProdutoEdicaoView view;
-    private ProdutoServico produtos;
+    private ProdutoServico service;
     private List<Categoria> categorias;
     private Integer id;
 
-    public ProdutoEdicaoPresenter(IProdutoEdicaoView view, ProdutoServico produtos,
+    public ProdutoEdicaoPresenter(IProdutoEdicaoView view, ProdutoServico service,
             CategoriaServico categorias, Integer id) {
         this.view = view;
-        this.produtos = produtos;
-        this.categorias = categorias.listar();
+        this.service = service;
+        this.categorias = categorias.listarTodos();
         this.id = id;
         String[] nomesCategorias = new String[this.categorias.size()];
         for (int i = 0; i < this.categorias.size(); i++) {
@@ -32,7 +32,7 @@ public class ProdutoEdicaoPresenter {
         if (id == null) {
             view.mostrarDados("", "", -1, "", "");
         } else {
-            Produto p = produtos.obter(id);
+            Produto p = service.consultar(id);
             int indice = this.categorias.indexOf(p.getCategoria());
             view.mostrarDados(p.getNome(), Formatos.numero(p.getPrecoCusto()), indice,
                     Formatos.numero(p.getMargemAtual()), Formatos.numero(p.getPrecoVendaAtual()));
@@ -55,11 +55,10 @@ public class ProdutoEdicaoPresenter {
         try {
             int indice = view.getCategoriaIndice();
             Integer categoriaId = indice < 0 || indice >= categorias.size() ? null : categorias.get(indice).getId();
-            produtos.salvar(id, view.getNome(), Formatos.lerNumero(view.getCusto(), "o preço de custo"), categoriaId);
+            service.salvar(id, view.getNome(), Formatos.lerNumero(view.getCusto(), "o preço de custo"), categoriaId);
             view.fechar();
         } catch (RegraNegocioException e) {
-            view.mensagem(e.getMessage());
+            view.exibirMensagem(e.getMessage());
         }
     }
 }
-

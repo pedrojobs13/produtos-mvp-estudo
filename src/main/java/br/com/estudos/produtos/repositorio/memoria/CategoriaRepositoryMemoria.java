@@ -43,7 +43,7 @@ public class CategoriaRepositoryMemoria implements ICategoriaRepository {
 
 
     @Override
-    public Categoria buscarPorId(int id) {
+    public Categoria consultar(int id) {
         for (Categoria categoria : dados) {
             if (categoria.getId() == id) {
                 return categoria;
@@ -54,7 +54,7 @@ public class CategoriaRepositoryMemoria implements ICategoriaRepository {
 
 
     @Override
-    public List<Categoria> listar() {
+    public List<Categoria> listarTodos() {
         return new ArrayList<>(dados);
     }
 }

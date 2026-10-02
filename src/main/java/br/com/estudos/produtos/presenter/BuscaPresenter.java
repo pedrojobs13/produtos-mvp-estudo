@@ -12,12 +12,12 @@ import java.util.List;
 
 public class BuscaPresenter {
     private final IBuscaView view;
-    private final ProdutoServico produtos;
+    private final ProdutoServico service;
     private List<Produto> resultados = new ArrayList<>();
 
-    public BuscaPresenter(IBuscaView view, ProdutoServico produtos, INavegacao navegacao) {
+    public BuscaPresenter(IBuscaView view, ProdutoServico service, INavegacao navegacao) {
         this.view = view;
-        this.produtos = produtos;
+        this.service = service;
         view.aoBuscar(new Runnable() {
             @Override
             public void run() {
@@ -57,9 +57,8 @@ public class BuscaPresenter {
     }
 
     private void buscar() {
-        resultados = produtos.buscar(view.getTexto(), view.isBuscaCategoria());
+        resultados = service.buscar(view.getTexto(), view.isBuscaCategoria());
         view.mostrarProdutos(Formatos.produtos(resultados));
         view.habilitarVisualizar(false);
     }
 }
-

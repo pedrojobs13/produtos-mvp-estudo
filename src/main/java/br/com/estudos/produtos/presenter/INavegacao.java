@@ -12,5 +12,6 @@ public interface INavegacao {
     void visualizarProduto(int id);
     void editarProduto(int id);
     void historicoProduto(int id);
+    void sair();
 }
 

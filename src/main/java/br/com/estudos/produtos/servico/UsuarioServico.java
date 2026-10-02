@@ -10,18 +10,18 @@ import br.com.estudos.produtos.repositorio.IUsuarioRepository;
 import java.util.List;
 
 public class UsuarioServico {
-    private IUsuarioRepository usuarios;
+    private IUsuarioRepository usuarioRepository;
 
-    public UsuarioServico(IUsuarioRepository usuarios) {
-        this.usuarios = usuarios;
+    public UsuarioServico(IUsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
     }
 
-    public List<Usuario> listar() {
-        return usuarios.listar();
+    public List<Usuario> listarTodos() {
+        return usuarioRepository.listarTodos();
     }
 
-    public Usuario obter(int id) {
-        Usuario usuario = usuarios.buscarPorId(id);
+    public Usuario consultar(int id) {
+        Usuario usuario = usuarioRepository.consultar(id);
         if (usuario == null) {
             throw new RegraNegocioException("Usuário não encontrado.");
         }
@@ -41,7 +41,7 @@ public class UsuarioServico {
 
         if (id == null) {
             usuario = new Usuario(
-                    usuarios.proximoId(),
+                    usuarioRepository.proximoId(),
                     nomeValido,
                     emailValido,
                     nomeUsuarioValido,
@@ -51,7 +51,7 @@ public class UsuarioServico {
                     cliente
             );
         } else {
-            usuario = obter(id);
+            usuario = consultar(id);
             usuario.atualizar(
                     nomeValido,
                     emailValido,
@@ -63,12 +63,12 @@ public class UsuarioServico {
             usuario.alterarStatus(habilitado);
         }
 
-        usuarios.salvar(usuario);
+        usuarioRepository.salvar(usuario);
         return usuario;
     }
 
     public void criarAdministradorInicial() {
-        if (usuarios.listar().isEmpty()) {
+        if (usuarioRepository.listarTodos().isEmpty()) {
             salvar(
                     null,
                     "Administrador",

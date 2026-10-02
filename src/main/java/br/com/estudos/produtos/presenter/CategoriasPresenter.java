@@ -13,14 +13,14 @@ import java.util.List;
 
 public class CategoriasPresenter {
     private final ICategoriasView view;
-    private final CategoriaServico servico;
+    private final CategoriaServico service;
     private List<Categoria> categorias = new ArrayList<>();
     private Integer idEdicao;
     private boolean editando;
 
-    public CategoriasPresenter(ICategoriasView view, CategoriaServico servico) {
+    public CategoriasPresenter(ICategoriasView view, CategoriaServico service) {
         this.view = view;
-        this.servico = servico;
+        this.service = service;
         view.aoNovo(new Runnable() {
             @Override
             public void run() {
@@ -73,7 +73,7 @@ public class CategoriasPresenter {
     }
 
     private void atualizar() {
-        categorias = servico.listar();
+        categorias = service.listarTodos();
         String[][] linhas = new String[categorias.size()][2];
         for (int i = 0; i < categorias.size(); i++) {
             Categoria c = categorias.get(i);
@@ -108,23 +108,22 @@ public class CategoriasPresenter {
 
     private void salvar() {
         try {
-            servico.salvar(idEdicao, view.getNome(), Formatos.lerNumero(view.getPercentual(), "o percentual"));
+            service.salvar(idEdicao, view.getNome(), Formatos.lerNumero(view.getPercentual(), "o percentual"));
             editando = false;
             atualizar();
         } catch (RegraNegocioException e) {
-            view.mensagem(e.getMessage());
+            view.exibirMensagem(e.getMessage());
         }
     }
 
     private void excluir() {
         Categoria c = selecionada();
-        if (c == null || !view.confirmar("Excluir a categoria " + c.getNome() + "?")) return;
+        if (c == null || !view.exibirConfirmacao("Excluir a categoria " + c.getNome() + "?")) return;
         try {
-            servico.excluir(c.getId());
+            service.excluir(c.getId());
             atualizar();
         } catch (RegraNegocioException e) {
-            view.mensagem(e.getMessage());
+            view.exibirMensagem(e.getMessage());
         }
     }
 }
-

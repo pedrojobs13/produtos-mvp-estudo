@@ -32,7 +32,7 @@ public class ProdutoRepositoryMemoria implements IProdutoRepository {
 
 
     @Override
-    public Produto buscarPorId(int id) {
+    public Produto consultar(int id) {
         for (Produto produto : dados) {
             if (produto.getId() == id) {
                 return produto;
@@ -43,7 +43,7 @@ public class ProdutoRepositoryMemoria implements IProdutoRepository {
 
 
     @Override
-    public List<Produto> listar() {
+    public List<Produto> listarTodos() {
         return new ArrayList<>(dados);
     }
 }

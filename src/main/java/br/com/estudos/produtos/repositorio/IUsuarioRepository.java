@@ -14,7 +14,7 @@ public interface IUsuarioRepository {
 
     void excluir(int id);
 
-    Usuario buscarPorId(int id);
+    Usuario consultar(int id);
 
-    List<Usuario> listar();
+    List<Usuario> listarTodos();
 }

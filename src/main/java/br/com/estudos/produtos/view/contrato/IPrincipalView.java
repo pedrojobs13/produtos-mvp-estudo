@@ -5,9 +5,12 @@
 package br.com.estudos.produtos.view.contrato;
 
 public interface IPrincipalView extends IJanelaView {
+    void exibirUsuario(String nome, String perfil);
+    void configurarPerfil(String perfil);
     void aoIncluir(Runnable acao);
     void aoBuscar(Runnable acao);
     void aoCategorias(Runnable acao);
     void aoCalcular(Runnable acao);
+    void aoSair(Runnable acao);
 }
 

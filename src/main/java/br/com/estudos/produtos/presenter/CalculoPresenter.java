@@ -11,11 +11,11 @@ import java.time.LocalDate;
 
 public class CalculoPresenter {
     private final ICalculoView view;
-    private final CalculoPrecoServico servico;
+    private final CalculoPrecoServico service;
 
-    public CalculoPresenter(ICalculoView view, CalculoPrecoServico servico) {
+    public CalculoPresenter(ICalculoView view, CalculoPrecoServico service) {
         this.view = view;
-        this.servico = servico;
+        this.service = service;
         view.mostrarData(Formatos.data(LocalDate.now()));
         atualizarAviso();
         view.aoCalcular(new Runnable() {
@@ -33,18 +33,17 @@ public class CalculoPresenter {
     }
 
     private void atualizarAviso() {
-        LocalDate ultima = servico.getUltimoCalculo();
+        LocalDate ultima = service.getUltimoCalculo();
         view.mostrarAviso(ultima == null ? "Primeiro cálculo disponível." :
                 "Último cálculo: " + Formatos.data(ultima) + ". Próximo permitido: " + Formatos.data(ultima.plusDays(10)) + ".");
     }
 
     private void calcular() {
         try {
-            view.mostrarResultados(Formatos.produtos(servico.calcular(Formatos.lerData(view.getData()))));
+            view.mostrarResultados(Formatos.produtos(service.calcular(Formatos.lerData(view.getData()))));
             atualizarAviso();
         } catch (RegraNegocioException e) {
-            view.mensagem(e.getMessage());
+            view.exibirMensagem(e.getMessage());
         }
     }
 }
-

@@ -9,18 +9,18 @@ import br.com.estudos.produtos.repositorio.IClienteRepository;
 import java.util.List;
 
 public class ClienteServico {
-    private IClienteRepository clientes;
+    private IClienteRepository clienteRepository;
 
-    public ClienteServico(IClienteRepository clientes) {
-        this.clientes = clientes;
+    public ClienteServico(IClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
-    public List<Cliente> listar() {
-        return clientes.listar();
+    public List<Cliente> listarTodos() {
+        return clienteRepository.listarTodos();
     }
 
-    public Cliente obter(int id) {
-        Cliente cliente = clientes.buscarPorId(id);
+    public Cliente consultar(int id) {
+        Cliente cliente = clienteRepository.consultar(id);
         if (cliente == null) {
             throw new RegraNegocioException("Cliente não encontrado.");
         }
@@ -39,7 +39,7 @@ public class ClienteServico {
 
         if (id == null) {
             cliente = new Cliente(
-                    clientes.proximoId(),
+                    clienteRepository.proximoId(),
                     nomeValido,
                     logradouroValido,
                     bairroValido,
@@ -47,7 +47,7 @@ public class ClienteServico {
                     ufValida
             );
         } else {
-            cliente = obter(id);
+            cliente = consultar(id);
             cliente.atualizar(
                     nomeValido,
                     logradouroValido,
@@ -57,13 +57,13 @@ public class ClienteServico {
             );
         }
 
-        clientes.salvar(cliente);
+        clienteRepository.salvar(cliente);
         return cliente;
     }
 
     public void excluir(int id) {
-        obter(id);
-        clientes.excluir(id);
+        consultar(id);
+        clienteRepository.excluir(id);
     }
 
     private String validarUf(String uf) {

@@ -38,18 +38,22 @@ import br.com.estudos.produtos.view.ProdutoDetalheDialog;
 import br.com.estudos.produtos.view.ProdutoEdicaoDialog;
 
 public class Aplicacao implements INavegacao, ILoginNavegacao {
-    private final ICategoriaRepository categorias = new CategoriaRepositoryMemoria();
-    private final IProdutoRepository produtos = new ProdutoRepositoryMemoria();
-    private final IHistoricoPrecoRepository historicos = new HistoricoPrecoRepositoryMemoria();
-    private final CategoriaServico categoriaServico = new CategoriaServico(categorias, produtos);
-    private final ProdutoServico produtoServico = new ProdutoServico(produtos, categorias);
-    private final CalculoPrecoServico calculoServico = new CalculoPrecoServico(produtos, historicos);
-    private final IUsuarioRepository usuarios = new UsuarioRepositoryMemoria();
-    private final UsuarioServico usuarioServico = new UsuarioServico(usuarios);
-    private final AutenticacaoServico autenticacaoServico = new AutenticacaoServico(usuarios);
+    private final ICategoriaRepository categoriaRepository = new CategoriaRepositoryMemoria();
+    private final IProdutoRepository produtoRepository = new ProdutoRepositoryMemoria();
+    private final IHistoricoPrecoRepository historicoPrecoRepository = new HistoricoPrecoRepositoryMemoria();
+    private final CategoriaServico categoriaServico = new CategoriaServico(categoriaRepository, produtoRepository);
+    private final ProdutoServico produtoServico = new ProdutoServico(produtoRepository, categoriaRepository);
+    private final CalculoPrecoServico calculoServico = new CalculoPrecoServico(produtoRepository, historicoPrecoRepository);
+    private final IUsuarioRepository usuarioRepository = new UsuarioRepositoryMemoria();
+    private final UsuarioServico usuarioServico = new UsuarioServico(usuarioRepository);
+    private final AutenticacaoServico autenticacaoServico = new AutenticacaoServico(usuarioRepository);
 
     public void iniciar() {
         new Seeder(categoriaServico, produtoServico, calculoServico, usuarioServico).executar();
+        abrirLogin();
+    }
+
+    private void abrirLogin() {
         LoginFrame view = new LoginFrame();
         new LoginPresenter(view, autenticacaoServico, this);
         view.exibir();
@@ -58,8 +62,13 @@ public class Aplicacao implements INavegacao, ILoginNavegacao {
     @Override
     public void abrirPrincipal(br.com.estudos.produtos.model.Usuario usuario) {
         PrincipalFrame view = new PrincipalFrame();
-        new PrincipalPresenter(view, this);
+        new PrincipalPresenter(view, this, usuario);
         view.exibir();
+    }
+
+    @Override
+    public void sair() {
+        abrirLogin();
     }
 
 
@@ -114,7 +123,7 @@ public class Aplicacao implements INavegacao, ILoginNavegacao {
     @Override
     public void historicoProduto(int id) {
         HistoricoDialog view = new HistoricoDialog();
-        new HistoricoPresenter(view, produtoServico, historicos, id);
+        new HistoricoPresenter(view, produtoServico, historicoPrecoRepository, id);
         view.exibir();
     }
 }

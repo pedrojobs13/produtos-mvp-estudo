@@ -13,7 +13,7 @@ import java.util.List;
 
 public class HistoricoPresenter {
     public HistoricoPresenter(IHistoricoView view, ProdutoServico produtos, IHistoricoPrecoRepository historicos, int id) {
-        Produto produto = produtos.obter(id);
+        Produto produto = produtos.consultar(id);
         view.mostrarProduto(produto.getNome(), produto.getCategoria().getNome());
         List<HistoricoPreco> registros = historicos.listarPorProduto(id);
         String[][] linhas = new String[registros.size()][3];
@@ -31,4 +31,3 @@ public class HistoricoPresenter {
         });
     }
 }
-

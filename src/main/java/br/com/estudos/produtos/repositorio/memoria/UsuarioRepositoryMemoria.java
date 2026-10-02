@@ -43,7 +43,7 @@ public class UsuarioRepositoryMemoria implements IUsuarioRepository {
 
 
     @Override
-    public Usuario buscarPorId(int id) {
+    public Usuario consultar(int id) {
         for (Usuario usuario : dados) {
             if (usuario.getId() == id) {
                 return usuario;
@@ -54,7 +54,7 @@ public class UsuarioRepositoryMemoria implements IUsuarioRepository {
 
 
     @Override
-    public List<Usuario> listar() {
+    public List<Usuario> listarTodos() {
         return new ArrayList<>(dados);
     }
 }

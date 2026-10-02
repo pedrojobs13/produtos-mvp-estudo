@@ -11,7 +11,6 @@ public interface ICategoriaRepository {
     int proximoId();
     void salvar(Categoria categoria);
     void excluir(int id);
-    Categoria buscarPorId(int id);
-    List<Categoria> listar();
+    Categoria consultar(int id);
+    List<Categoria> listarTodos();
 }
-

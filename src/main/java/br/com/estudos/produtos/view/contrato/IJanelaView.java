@@ -7,7 +7,6 @@ package br.com.estudos.produtos.view.contrato;
 public interface IJanelaView {
     void exibir();
     void fechar();
-    void mensagem(String texto);
-    boolean confirmar(String texto);
+    void exibirMensagem(String texto);
+    boolean exibirConfirmacao(String texto);
 }
-
