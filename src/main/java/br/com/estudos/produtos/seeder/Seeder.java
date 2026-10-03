@@ -5,6 +5,7 @@
 package br.com.estudos.produtos.seeder;
 
 import br.com.estudos.produtos.model.Categoria;
+import br.com.estudos.produtos.servico.ClienteServico;
 import br.com.estudos.produtos.servico.CalculoPrecoServico;
 import br.com.estudos.produtos.servico.CategoriaServico;
 import br.com.estudos.produtos.servico.ProdutoServico;
@@ -16,16 +17,21 @@ public class Seeder {
     private final ProdutoServico produtos;
     private final CalculoPrecoServico calculo;
     private final UsuarioServico usuarios;
+    private final ClienteServico clientes;
 
-    public Seeder(CategoriaServico categorias, ProdutoServico produtos, CalculoPrecoServico calculo, UsuarioServico usuarios) {
+    public Seeder(CategoriaServico categorias, ProdutoServico produtos, CalculoPrecoServico calculo,
+            UsuarioServico usuarios, ClienteServico clientes) {
         this.categorias = categorias;
         this.produtos = produtos;
         this.calculo = calculo;
         this.usuarios = usuarios;
+        this.clientes = clientes;
     }
 
     public void executar() {
         usuarios.criarAdministradorInicial();
+        clientes.salvar(null, "Ana Silva", "Rua das Flores, 10", "Centro", "Vitória", "ES");
+        clientes.salvar(null, "João Souza", "Avenida Brasil, 200", "Praia do Canto", "Vitória", "ES");
         Categoria educacao = categorias.salvar(null, "Educação", 25.0);
         Categoria papelaria = categorias.salvar(null, "Papelaria", 30.0);
         Categoria alimentacao = categorias.salvar(null, "Alimentação", 22.0);

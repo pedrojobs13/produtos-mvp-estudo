@@ -30,6 +30,12 @@ public class PrincipalPresenter {
                 navegacao.categorias();
             }
         });
+        view.aoClientes(new Runnable() {
+            @Override
+            public void run() {
+                navegacao.clientes();
+            }
+        });
         view.aoCalcular(new Runnable() {
             @Override
             public void run() {

@@ -64,6 +64,11 @@ public class PrincipalFrame extends javax.swing.JFrame implements IPrincipalView
     }
 
     @Override
+    public void aoClientes(Runnable acao) {
+        Eventos.adicionarAcao(menuClientes, acao);
+    }
+
+    @Override
     public void aoCalcular(Runnable acao) {
         Eventos.adicionarAcao(menuCalcular, acao);
     }

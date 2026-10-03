@@ -7,6 +7,7 @@ package br.com.estudos.produtos;
 import br.com.estudos.produtos.presenter.BuscaPresenter;
 import br.com.estudos.produtos.presenter.CalculoPresenter;
 import br.com.estudos.produtos.presenter.CategoriasPresenter;
+import br.com.estudos.produtos.presenter.ClientesPresenter;
 import br.com.estudos.produtos.presenter.HistoricoPresenter;
 import br.com.estudos.produtos.presenter.INavegacao;
 import br.com.estudos.produtos.presenter.ILoginNavegacao;
@@ -15,10 +16,12 @@ import br.com.estudos.produtos.presenter.PrincipalPresenter;
 import br.com.estudos.produtos.presenter.ProdutoDetalhePresenter;
 import br.com.estudos.produtos.presenter.ProdutoEdicaoPresenter;
 import br.com.estudos.produtos.repositorio.ICategoriaRepository;
+import br.com.estudos.produtos.repositorio.IClienteRepository;
 import br.com.estudos.produtos.repositorio.IHistoricoPrecoRepository;
 import br.com.estudos.produtos.repositorio.IProdutoRepository;
 import br.com.estudos.produtos.repositorio.IUsuarioRepository;
 import br.com.estudos.produtos.repositorio.memoria.CategoriaRepositoryMemoria;
+import br.com.estudos.produtos.repositorio.memoria.ClienteRepositoryMemoria;
 import br.com.estudos.produtos.repositorio.memoria.HistoricoPrecoRepositoryMemoria;
 import br.com.estudos.produtos.repositorio.memoria.ProdutoRepositoryMemoria;
 import br.com.estudos.produtos.repositorio.memoria.UsuarioRepositoryMemoria;
@@ -26,11 +29,13 @@ import br.com.estudos.produtos.seeder.Seeder;
 import br.com.estudos.produtos.servico.CalculoPrecoServico;
 import br.com.estudos.produtos.servico.AutenticacaoServico;
 import br.com.estudos.produtos.servico.CategoriaServico;
+import br.com.estudos.produtos.servico.ClienteServico;
 import br.com.estudos.produtos.servico.ProdutoServico;
 import br.com.estudos.produtos.servico.UsuarioServico;
 import br.com.estudos.produtos.view.BuscaDialog;
 import br.com.estudos.produtos.view.CalculoDialog;
 import br.com.estudos.produtos.view.CategoriasDialog;
+import br.com.estudos.produtos.view.ClientesDialog;
 import br.com.estudos.produtos.view.HistoricoDialog;
 import br.com.estudos.produtos.view.LoginFrame;
 import br.com.estudos.produtos.view.PrincipalFrame;
@@ -41,15 +46,17 @@ public class Aplicacao implements INavegacao, ILoginNavegacao {
     private final ICategoriaRepository categoriaRepository = new CategoriaRepositoryMemoria();
     private final IProdutoRepository produtoRepository = new ProdutoRepositoryMemoria();
     private final IHistoricoPrecoRepository historicoPrecoRepository = new HistoricoPrecoRepositoryMemoria();
+    private final IClienteRepository clienteRepository = new ClienteRepositoryMemoria();
     private final CategoriaServico categoriaServico = new CategoriaServico(categoriaRepository, produtoRepository);
     private final ProdutoServico produtoServico = new ProdutoServico(produtoRepository, categoriaRepository);
     private final CalculoPrecoServico calculoServico = new CalculoPrecoServico(produtoRepository, historicoPrecoRepository);
+    private final ClienteServico clienteServico = new ClienteServico(clienteRepository);
     private final IUsuarioRepository usuarioRepository = new UsuarioRepositoryMemoria();
     private final UsuarioServico usuarioServico = new UsuarioServico(usuarioRepository);
     private final AutenticacaoServico autenticacaoServico = new AutenticacaoServico(usuarioRepository);
 
     public void iniciar() {
-        new Seeder(categoriaServico, produtoServico, calculoServico, usuarioServico).executar();
+        new Seeder(categoriaServico, produtoServico, calculoServico, usuarioServico, clienteServico).executar();
         abrirLogin();
     }
 
@@ -92,6 +99,13 @@ public class Aplicacao implements INavegacao, ILoginNavegacao {
     public void categorias() {
         CategoriasDialog view = new CategoriasDialog();
         new CategoriasPresenter(view, categoriaServico);
+        view.exibir();
+    }
+
+    @Override
+    public void clientes() {
+        ClientesDialog view = new ClientesDialog();
+        new ClientesPresenter(view, clienteServico);
         view.exibir();
     }
 
