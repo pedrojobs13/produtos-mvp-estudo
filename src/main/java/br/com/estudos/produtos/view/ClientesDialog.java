@@ -38,6 +38,31 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
     }
 
     @Override
+    public String getNome() {
+        return textFieldNome.getText();
+    }
+
+    @Override
+    public String getLogradouro() {
+        return textFieldLogradouro.getText();
+    }
+
+    @Override
+    public String getBairro() {
+        return textFieldBairro.getText();
+    }
+
+    @Override
+    public String getCidade() {
+        return textFieldCidade.getText();
+    }
+
+    @Override
+    public String getUf() {
+        return textFieldUf.getText();
+    }
+
+    @Override
     public int getLinha() {
         return tableClientes.getSelectedRow();
     }
@@ -69,6 +94,53 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
     }
 
     @Override
+    public void definirModo(boolean editando, boolean selecionado, String descricao) {
+        labelModo.setText("Modo: " + descricao);
+
+        textFieldNome.setEditable(editando);
+        textFieldLogradouro.setEditable(editando);
+        textFieldBairro.setEditable(editando);
+        textFieldCidade.setEditable(editando);
+        textFieldUf.setEditable(editando);
+        tableClientes.setEnabled(!editando);
+
+        btnNovo.setEnabled(!editando);
+        btnFechar.setEnabled(!editando);
+        btnEditar.setEnabled(!editando && selecionado);
+        btnExcluir.setEnabled(!editando && selecionado);
+        btnSalvar.setEnabled(editando);
+        btnCancelar.setEnabled(editando);
+
+        setDefaultCloseOperation(editando ? javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE
+                : javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+
+    @Override
+    public void aoNovo(Runnable acao) {
+        Eventos.adicionarAcao(btnNovo, acao);
+    }
+
+    @Override
+    public void aoEditar(Runnable acao) {
+        Eventos.adicionarAcao(btnEditar, acao);
+    }
+
+    @Override
+    public void aoExcluir(Runnable acao) {
+        Eventos.adicionarAcao(btnExcluir, acao);
+    }
+
+    @Override
+    public void aoSalvar(Runnable acao) {
+        Eventos.adicionarAcao(btnSalvar, acao);
+    }
+
+    @Override
+    public void aoCancelar(Runnable acao) {
+        Eventos.adicionarAcao(btnCancelar, acao);
+    }
+
+    @Override
     public void aoSelecionar(Runnable acao) {
         Eventos.adicionarSelecao(tableClientes, acao);
     }
@@ -88,6 +160,7 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
     private void initComponents() {
 
         dados = new javax.swing.JPanel();
+        labelModo = new javax.swing.JLabel();
         labelNome = new javax.swing.JLabel();
         textFieldNome = new javax.swing.JTextField();
         labelLogradouro = new javax.swing.JLabel();
@@ -103,6 +176,11 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
         labelTotalCompras = new javax.swing.JLabel();
         textFieldTotalCompras = new javax.swing.JTextField();
         botoes = new javax.swing.JPanel();
+        btnNovo = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         listagem = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -115,6 +193,7 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
 
         dados.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados do cliente"));
 
+        labelModo.setText("Modo: Visualização");
         labelNome.setText("Nome:");
         labelLogradouro.setText("Logradouro:");
         labelBairro.setText("Bairro:");
@@ -131,6 +210,11 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
         textFieldTipo.setEditable(false);
         textFieldTotalCompras.setEditable(false);
 
+        btnNovo.setText("Novo");
+        btnEditar.setText("Editar");
+        btnExcluir.setText("Excluir");
+        btnSalvar.setText("Salvar");
+        btnCancelar.setText("Cancelar");
         btnFechar.setText("Fechar");
 
         listagem.setBorder(javax.swing.BorderFactory.createTitledBorder("Clientes cadastrados"));
@@ -159,6 +243,10 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
             dadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dadosLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(labelModo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(dadosLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(dadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelNome)
                     .addComponent(labelLogradouro)
@@ -182,6 +270,8 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
             dadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dadosLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(labelModo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(dadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelNome)
                     .addComponent(textFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -216,16 +306,32 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
         botoes.setLayout(botoesLayout);
         botoesLayout.setHorizontalGroup(
             botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, botoesLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(botoesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnNovo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnExcluir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSalvar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCancelar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFechar)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         botoesLayout.setVerticalGroup(
             botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(botoesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnFechar)
+                .addGroup(botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNovo)
+                    .addComponent(btnEditar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar)
+                    .addComponent(btnFechar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -276,12 +382,18 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoes;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JPanel dados;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelBairro;
     private javax.swing.JLabel labelCidade;
     private javax.swing.JLabel labelLogradouro;
+    private javax.swing.JLabel labelModo;
     private javax.swing.JLabel labelNome;
     private javax.swing.JLabel labelTipo;
     private javax.swing.JLabel labelTotalCompras;
