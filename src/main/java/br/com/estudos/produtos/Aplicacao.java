@@ -10,6 +10,7 @@ import br.com.estudos.produtos.presenter.CategoriasPresenter;
 import br.com.estudos.produtos.presenter.ClientesPresenter;
 import br.com.estudos.produtos.presenter.HistoricoPresenter;
 import br.com.estudos.produtos.presenter.INavegacao;
+import br.com.estudos.produtos.presenter.IUsuariosNavegacao;
 import br.com.estudos.produtos.presenter.ILoginNavegacao;
 import br.com.estudos.produtos.presenter.LoginPresenter;
 import br.com.estudos.produtos.presenter.PrincipalPresenter;
@@ -112,9 +113,16 @@ public class Aplicacao implements INavegacao, ILoginNavegacao {
     }
 
     @Override
-    public void usuarios() {
+    public void usuarios(br.com.estudos.produtos.model.Usuario usuario) {
         UsuariosDialog view = new UsuariosDialog();
-        new UsuariosPresenter(view, usuarioServico);
+        new UsuariosPresenter(view, usuarioServico, clienteServico, usuario, new IUsuariosNavegacao() {
+            @Override
+            public void incluirCliente() {
+                ClientesDialog clientesView = new ClientesDialog();
+                new ClientesPresenter(clientesView, clienteServico, true);
+                clientesView.exibir();
+            }
+        });
         view.exibir();
     }
 

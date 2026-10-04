@@ -38,6 +38,42 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
     }
 
     @Override
+    public String getNome() {
+        return textFieldNome.getText();
+    }
+
+    @Override
+    public String getEmail() {
+        return textFieldEmail.getText();
+    }
+
+    @Override
+    public String getNomeUsuario() {
+        return textFieldNomeUsuario.getText();
+    }
+
+    @Override
+    public String getSenha() {
+        return new String(textFieldSenha.getPassword());
+    }
+
+    @Override
+    public String getConfirmaSenha() {
+        return new String(textFieldConfirmaSenha.getPassword());
+    }
+
+    @Override
+    public String getPerfil() {
+        return textFieldPerfil.getText();
+    }
+
+    @Override
+    public String getCliente() {
+        Object cliente = boxCliente.getSelectedItem();
+        return cliente == null ? "" : cliente.toString();
+    }
+
+    @Override
     public int getLinha() {
         return tableUsuarios.getSelectedRow();
     }
@@ -52,7 +88,16 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         textFieldConfirmaSenha.setText("");
         textFieldPerfil.setText(perfil);
         textFieldStatus.setText(status);
-        textFieldCliente.setText(cliente);
+        boxCliente.setSelectedItem(cliente);
+    }
+
+    @Override
+    public void mostrarClientes(String[] clientes) {
+        boxCliente.removeAllItems();
+        boxCliente.addItem("");
+        for (String cliente : clientes) {
+            boxCliente.addItem(cliente);
+        }
     }
 
     @Override
@@ -67,6 +112,86 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         } else {
             tableUsuarios.setRowSelectionInterval(indice, indice);
         }
+    }
+
+    @Override
+    public void definirModo(boolean editando, boolean selecionado, boolean administrador,
+            boolean habilitado, String descricao) {
+        textFieldNome.setEditable(editando);
+        textFieldEmail.setEditable(editando);
+        textFieldNomeUsuario.setEditable(editando);
+        textFieldSenha.setEditable(editando);
+        textFieldConfirmaSenha.setEditable(editando);
+        textFieldPerfil.setEditable(editando);
+        boxCliente.setEnabled(editando);
+        tableUsuarios.setEnabled(!editando);
+
+        btnNovo.setEnabled(!editando);
+        btnFechar.setEnabled(!editando);
+        btnEditar.setEnabled(!editando && selecionado && !administrador);
+        btnExcluir.setEnabled(!editando && selecionado && !administrador);
+        btnHabilitar.setEnabled(!editando && selecionado && !administrador && !habilitado);
+        btnDesabilitar.setEnabled(!editando && selecionado && !administrador && habilitado);
+        btnSalvar.setEnabled(editando);
+        btnCancelar.setEnabled(editando);
+        btnMostrarSenha.setEnabled(editando);
+        btnIncluirCliente.setEnabled(editando);
+        setDefaultCloseOperation(editando ? javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE
+                : javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+
+    @Override
+    public void alternarSenha() {
+        char caractere = textFieldSenha.getEchoChar();
+        char novoCaractere = caractere == 0 ? '•' : (char) 0;
+        textFieldSenha.setEchoChar(novoCaractere);
+        textFieldConfirmaSenha.setEchoChar(novoCaractere);
+        btnMostrarSenha.setText(caractere == 0 ? "Mostrar senha" : "Ocultar senha");
+    }
+
+    @Override
+    public void aoNovo(Runnable acao) {
+        Eventos.adicionarAcao(btnNovo, acao);
+    }
+
+    @Override
+    public void aoEditar(Runnable acao) {
+        Eventos.adicionarAcao(btnEditar, acao);
+    }
+
+    @Override
+    public void aoExcluir(Runnable acao) {
+        Eventos.adicionarAcao(btnExcluir, acao);
+    }
+
+    @Override
+    public void aoSalvar(Runnable acao) {
+        Eventos.adicionarAcao(btnSalvar, acao);
+    }
+
+    @Override
+    public void aoCancelar(Runnable acao) {
+        Eventos.adicionarAcao(btnCancelar, acao);
+    }
+
+    @Override
+    public void aoHabilitar(Runnable acao) {
+        Eventos.adicionarAcao(btnHabilitar, acao);
+    }
+
+    @Override
+    public void aoDesabilitar(Runnable acao) {
+        Eventos.adicionarAcao(btnDesabilitar, acao);
+    }
+
+    @Override
+    public void aoMostrarSenha(Runnable acao) {
+        Eventos.adicionarAcao(btnMostrarSenha, acao);
+    }
+
+    @Override
+    public void aoIncluirCliente(Runnable acao) {
+        Eventos.adicionarAcao(btnIncluirCliente, acao);
     }
 
     @Override
@@ -104,8 +229,17 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         labelStatus = new javax.swing.JLabel();
         textFieldStatus = new javax.swing.JTextField();
         labelCliente = new javax.swing.JLabel();
-        textFieldCliente = new javax.swing.JTextField();
+        boxCliente = new javax.swing.JComboBox<>();
         botoes = new javax.swing.JPanel();
+        btnNovo = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnHabilitar = new javax.swing.JButton();
+        btnDesabilitar = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnMostrarSenha = new javax.swing.JButton();
+        btnIncluirCliente = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         listagem = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -134,8 +268,17 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         textFieldConfirmaSenha.setEditable(false);
         textFieldPerfil.setEditable(false);
         textFieldStatus.setEditable(false);
-        textFieldCliente.setEditable(false);
+        boxCliente.setEnabled(false);
 
+        btnNovo.setText("Novo");
+        btnEditar.setText("Editar");
+        btnExcluir.setText("Excluir");
+        btnHabilitar.setText("Habilitar");
+        btnDesabilitar.setText("Desabilitar");
+        btnSalvar.setText("Salvar");
+        btnCancelar.setText("Cancelar");
+        btnMostrarSenha.setText("Mostrar senha");
+        btnIncluirCliente.setText("Incluir cliente");
         btnFechar.setText("Fechar");
 
         listagem.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuários cadastrados"));
@@ -182,7 +325,7 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
                     .addComponent(textFieldConfirmaSenha)
                     .addComponent(textFieldPerfil)
                     .addComponent(textFieldStatus)
-                    .addComponent(textFieldCliente))
+                    .addComponent(boxCliente))
                 .addContainerGap())
         );
         dadosLayout.setVerticalGroup(
@@ -219,7 +362,7 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(dadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelCliente)
-                    .addComponent(textFieldCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -227,16 +370,44 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         botoes.setLayout(botoesLayout);
         botoesLayout.setHorizontalGroup(
             botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, botoesLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(botoesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnNovo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnExcluir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnHabilitar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDesabilitar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSalvar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCancelar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnMostrarSenha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnIncluirCliente)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFechar)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         botoesLayout.setVerticalGroup(
             botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(botoesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnFechar)
+                .addGroup(botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNovo)
+                    .addComponent(btnEditar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnHabilitar)
+                    .addComponent(btnDesabilitar)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar)
+                    .addComponent(btnMostrarSenha)
+                    .addComponent(btnIncluirCliente)
+                    .addComponent(btnFechar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -286,8 +457,18 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> boxCliente;
     private javax.swing.JPanel botoes;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnDesabilitar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnHabilitar;
+    private javax.swing.JButton btnIncluirCliente;
+    private javax.swing.JButton btnMostrarSenha;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JPanel dados;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelCliente;
@@ -300,7 +481,6 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
     private javax.swing.JLabel labelStatus;
     private javax.swing.JPanel listagem;
     private javax.swing.JTable tableUsuarios;
-    private javax.swing.JTextField textFieldCliente;
     private javax.swing.JPasswordField textFieldConfirmaSenha;
     private javax.swing.JTextField textFieldEmail;
     private javax.swing.JTextField textFieldNome;

@@ -39,7 +39,7 @@ public class PrincipalPresenter {
         view.aoUsuarios(new Runnable() {
             @Override
             public void run() {
-                navegacao.usuarios();
+                navegacao.usuarios(usuario);
             }
         });
         view.aoCalcular(new Runnable() {
