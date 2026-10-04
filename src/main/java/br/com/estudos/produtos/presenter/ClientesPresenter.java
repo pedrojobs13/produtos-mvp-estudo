@@ -19,6 +19,10 @@ public class ClientesPresenter {
     private boolean editando;
 
     public ClientesPresenter(IClientesView view, ClienteServico service) {
+        this(view, service, false);
+    }
+
+    public ClientesPresenter(IClientesView view, ClienteServico service, boolean iniciarInclusao) {
         this.view = view;
         this.service = service;
 
@@ -65,6 +69,9 @@ public class ClientesPresenter {
             }
         });
         atualizar();
+        if (iniciarInclusao) {
+            novo();
+        }
     }
 
     private Cliente selecionado() {
