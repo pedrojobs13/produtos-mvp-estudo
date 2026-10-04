@@ -15,6 +15,7 @@ import br.com.estudos.produtos.presenter.LoginPresenter;
 import br.com.estudos.produtos.presenter.PrincipalPresenter;
 import br.com.estudos.produtos.presenter.ProdutoDetalhePresenter;
 import br.com.estudos.produtos.presenter.ProdutoEdicaoPresenter;
+import br.com.estudos.produtos.presenter.UsuariosPresenter;
 import br.com.estudos.produtos.repositorio.ICategoriaRepository;
 import br.com.estudos.produtos.repositorio.IClienteRepository;
 import br.com.estudos.produtos.repositorio.IHistoricoPrecoRepository;
@@ -41,6 +42,7 @@ import br.com.estudos.produtos.view.LoginFrame;
 import br.com.estudos.produtos.view.PrincipalFrame;
 import br.com.estudos.produtos.view.ProdutoDetalheDialog;
 import br.com.estudos.produtos.view.ProdutoEdicaoDialog;
+import br.com.estudos.produtos.view.UsuariosDialog;
 
 public class Aplicacao implements INavegacao, ILoginNavegacao {
     private final ICategoriaRepository categoriaRepository = new CategoriaRepositoryMemoria();
@@ -106,6 +108,13 @@ public class Aplicacao implements INavegacao, ILoginNavegacao {
     public void clientes() {
         ClientesDialog view = new ClientesDialog();
         new ClientesPresenter(view, clienteServico);
+        view.exibir();
+    }
+
+    @Override
+    public void usuarios() {
+        UsuariosDialog view = new UsuariosDialog();
+        new UsuariosPresenter(view, usuarioServico);
         view.exibir();
     }
 

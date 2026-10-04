@@ -9,6 +9,7 @@ public interface INavegacao {
     void buscarProdutos();
     void categorias();
     void clientes();
+    void usuarios();
     void calcular();
     void visualizarProduto(int id);
     void editarProduto(int id);
