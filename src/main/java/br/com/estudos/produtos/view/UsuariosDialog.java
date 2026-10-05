@@ -4,6 +4,7 @@
  */
 package br.com.estudos.produtos.view;
 
+import br.com.estudos.produtos.model.Usuario;
 import br.com.estudos.produtos.view.contrato.IUsuariosView;
 
 public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView {
@@ -136,6 +137,11 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         btnCancelar.setEnabled(editando);
         btnMostrarSenha.setEnabled(editando);
         atualizarClientePorPerfil();
+
+        if (editando) {
+            textFieldNome.requestFocusInWindow();
+        }
+
         setDefaultCloseOperation(editando ? javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE
                 : javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
@@ -272,10 +278,35 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         labelCliente.setText("Cliente associado:");
 
         textFieldNome.setEditable(false);
+        textFieldNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldNomeActionPerformed(evt);
+            }
+        });
         textFieldEmail.setEditable(false);
+        textFieldEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldEmailActionPerformed(evt);
+            }
+        });
         textFieldNomeUsuario.setEditable(false);
+        textFieldNomeUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldNomeUsuarioActionPerformed(evt);
+            }
+        });
         textFieldSenha.setEditable(false);
+        textFieldSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldSenhaActionPerformed(evt);
+            }
+        });
         textFieldConfirmaSenha.setEditable(false);
+        textFieldConfirmaSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldConfirmaSenhaActionPerformed(evt);
+            }
+        });
         boxPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CLIENTE", "ATENDENTE" }));
         boxPerfil.setEnabled(false);
         boxPerfil.addActionListener(new java.awt.event.ActionListener() {
@@ -283,8 +314,18 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
                 boxPerfilActionPerformed(evt);
             }
         });
+        boxPerfil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                boxPerfilKeyPressed(evt);
+            }
+        });
         textFieldStatus.setEditable(false);
         boxCliente.setEnabled(false);
+        boxCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                boxClienteKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelSenhasLayout = new javax.swing.GroupLayout(painelSenhas);
         painelSenhas.setLayout(painelSenhasLayout);
@@ -486,6 +527,42 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
     private void boxPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxPerfilActionPerformed
         atualizarClientePorPerfil();
     }//GEN-LAST:event_boxPerfilActionPerformed
+
+    private void textFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldNomeActionPerformed
+        textFieldEmail.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldNomeActionPerformed
+
+    private void textFieldEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldEmailActionPerformed
+        textFieldNomeUsuario.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldEmailActionPerformed
+
+    private void textFieldNomeUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldNomeUsuarioActionPerformed
+        textFieldSenha.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldNomeUsuarioActionPerformed
+
+    private void textFieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldSenhaActionPerformed
+        textFieldConfirmaSenha.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldSenhaActionPerformed
+
+    private void textFieldConfirmaSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldConfirmaSenhaActionPerformed
+        boxPerfil.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldConfirmaSenhaActionPerformed
+
+    private void boxPerfilKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_boxPerfilKeyPressed
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            if (Usuario.CLIENTE.equals(getPerfil())) {
+                boxCliente.requestFocusInWindow();
+            } else {
+                btnSalvar.requestFocusInWindow();
+            }
+        }
+    }//GEN-LAST:event_boxPerfilKeyPressed
+
+    private void boxClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_boxClienteKeyPressed
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            btnSalvar.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_boxClienteKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxCliente;

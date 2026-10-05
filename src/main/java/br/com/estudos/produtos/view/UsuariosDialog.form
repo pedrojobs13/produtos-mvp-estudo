@@ -31,11 +31,11 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JLabel" name="labelNome"><Properties><Property name="text" type="java.lang.String" value="Nome completo:"/></Properties></Component>
-        <Component class="javax.swing.JTextField" name="textFieldNome"><Properties><Property name="editable" type="boolean" value="false"/></Properties></Component>
+        <Component class="javax.swing.JTextField" name="textFieldNome"><Properties><Property name="editable" type="boolean" value="false"/></Properties><Events><EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldNomeActionPerformed"/></Events></Component>
         <Component class="javax.swing.JLabel" name="labelEmail"><Properties><Property name="text" type="java.lang.String" value="E-mail:"/></Properties></Component>
-        <Component class="javax.swing.JTextField" name="textFieldEmail"><Properties><Property name="editable" type="boolean" value="false"/></Properties></Component>
+        <Component class="javax.swing.JTextField" name="textFieldEmail"><Properties><Property name="editable" type="boolean" value="false"/></Properties><Events><EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldEmailActionPerformed"/></Events></Component>
         <Component class="javax.swing.JLabel" name="labelNomeUsuario"><Properties><Property name="text" type="java.lang.String" value="Nome de usu&#xe1;rio:"/></Properties></Component>
-        <Component class="javax.swing.JTextField" name="textFieldNomeUsuario"><Properties><Property name="editable" type="boolean" value="false"/></Properties></Component>
+        <Component class="javax.swing.JTextField" name="textFieldNomeUsuario"><Properties><Property name="editable" type="boolean" value="false"/></Properties><Events><EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldNomeUsuarioActionPerformed"/></Events></Component>
         <Container class="javax.swing.JPanel" name="painelSenhas">
           <Layout>
             <DimensionLayout dim="0"><Group type="102" alignment="0" attributes="0"><Component id="labelSenha" min="-2" max="-2" attributes="0"/><EmptySpace max="-2" attributes="0"/><Component id="textFieldSenha" max="32767" attributes="0"/><EmptySpace type="unrelated" max="-2" attributes="0"/><Component id="labelConfirmaSenha" min="-2" max="-2" attributes="0"/><EmptySpace max="-2" attributes="0"/><Component id="textFieldConfirmaSenha" max="32767" attributes="0"/></Group></DimensionLayout>
@@ -43,17 +43,17 @@
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="labelSenha"><Properties><Property name="text" type="java.lang.String" value="Senha:"/></Properties></Component>
-            <Component class="javax.swing.JPasswordField" name="textFieldSenha"><Properties><Property name="editable" type="boolean" value="false"/></Properties></Component>
+            <Component class="javax.swing.JPasswordField" name="textFieldSenha"><Properties><Property name="editable" type="boolean" value="false"/></Properties><Events><EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldSenhaActionPerformed"/></Events></Component>
             <Component class="javax.swing.JLabel" name="labelConfirmaSenha"><Properties><Property name="text" type="java.lang.String" value="Confirmar senha:"/></Properties></Component>
-            <Component class="javax.swing.JPasswordField" name="textFieldConfirmaSenha"><Properties><Property name="editable" type="boolean" value="false"/></Properties></Component>
+            <Component class="javax.swing.JPasswordField" name="textFieldConfirmaSenha"><Properties><Property name="editable" type="boolean" value="false"/></Properties><Events><EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldConfirmaSenhaActionPerformed"/></Events></Component>
           </SubComponents>
         </Container>
         <Component class="javax.swing.JLabel" name="labelPerfil"><Properties><Property name="text" type="java.lang.String" value="Perfil:"/></Properties></Component>
-        <Component class="javax.swing.JComboBox" name="boxPerfil"><Properties><Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor"><StringArray count="2"><StringItem index="0" value="CLIENTE"/><StringItem index="1" value="ATENDENTE"/></StringArray></Property><Property name="enabled" type="boolean" value="false"/></Properties><Events><EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boxPerfilActionPerformed"/></Events></Component>
+        <Component class="javax.swing.JComboBox" name="boxPerfil"><Properties><Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor"><StringArray count="2"><StringItem index="0" value="CLIENTE"/><StringItem index="1" value="ATENDENTE"/></StringArray></Property><Property name="enabled" type="boolean" value="false"/></Properties><Events><EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boxPerfilActionPerformed"/><EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="boxPerfilKeyPressed"/></Events></Component>
         <Component class="javax.swing.JLabel" name="labelStatus"><Properties><Property name="text" type="java.lang.String" value="Status:"/></Properties></Component>
         <Component class="javax.swing.JTextField" name="textFieldStatus"><Properties><Property name="editable" type="boolean" value="false"/></Properties></Component>
         <Component class="javax.swing.JLabel" name="labelCliente"><Properties><Property name="text" type="java.lang.String" value="Cliente associado:"/></Properties></Component>
-        <Component class="javax.swing.JComboBox" name="boxCliente"><Properties><Property name="enabled" type="boolean" value="false"/></Properties></Component>
+        <Component class="javax.swing.JComboBox" name="boxCliente"><Properties><Property name="enabled" type="boolean" value="false"/></Properties><Events><EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="boxClienteKeyPressed"/></Events></Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="botoes">
