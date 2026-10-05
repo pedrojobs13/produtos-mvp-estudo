@@ -117,8 +117,18 @@ public class BuscaDialog extends javax.swing.JDialog implements IBuscaView {
         labelBusca.setText("Busca por");
 
         boxBusca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome do produto", "Categoria" }));
+        boxBusca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                boxBuscaKeyPressed(evt);
+            }
+        });
 
         textFieldBusca.setColumns(24);
+        textFieldBusca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldBuscaActionPerformed(evt);
+            }
+        });
 
         btnBuscar.setText("Buscar");
 
@@ -231,6 +241,16 @@ public class BuscaDialog extends javax.swing.JDialog implements IBuscaView {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void boxBuscaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_boxBuscaKeyPressed
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            textFieldBusca.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_boxBuscaKeyPressed
+
+    private void textFieldBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldBuscaActionPerformed
+        btnBuscar.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldBuscaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoes;
