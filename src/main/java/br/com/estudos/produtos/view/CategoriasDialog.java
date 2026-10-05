@@ -71,6 +71,11 @@ public class CategoriasDialog extends javax.swing.JDialog implements ICategorias
         btnNovo.setEnabled(!editando); btnFechar.setEnabled(!editando);
         btnEditar.setEnabled(!editando && selecionado); btnExcluir.setEnabled(!editando && selecionado);
         btnSalvar.setEnabled(editando); btnCancelar.setEnabled(editando);
+
+        if (editando) {
+            textFieldNome.requestFocusInWindow();
+        }
+
         setDefaultCloseOperation(editando ? javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE
                 : javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
@@ -153,10 +158,20 @@ public class CategoriasDialog extends javax.swing.JDialog implements ICategorias
         labelNome.setText("Categoria:");
 
         textFieldNome.setColumns(24);
+        textFieldNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldNomeActionPerformed(evt);
+            }
+        });
 
         labelPercentual.setText("Percentual de lucro (%):");
 
         textFieldPercentual.setColumns(24);
+        textFieldPercentual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldPercentualActionPerformed(evt);
+            }
+        });
 
 
         btnNovo.setText("Novo");
@@ -323,6 +338,14 @@ public class CategoriasDialog extends javax.swing.JDialog implements ICategorias
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void textFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldNomeActionPerformed
+        textFieldPercentual.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldNomeActionPerformed
+
+    private void textFieldPercentualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPercentualActionPerformed
+        btnSalvar.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldPercentualActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoes;

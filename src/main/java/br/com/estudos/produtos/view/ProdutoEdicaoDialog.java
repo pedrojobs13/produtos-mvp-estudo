@@ -103,11 +103,26 @@ public class ProdutoEdicaoDialog extends javax.swing.JDialog implements IProduto
         labelNome.setText("Nome do produto:");
         textFieldNome.setColumns(24);
         textFieldNome.setEditable(true);
+        textFieldNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldNomeActionPerformed(evt);
+            }
+        });
         labelCusto.setText("Preço de custo:");
         textFieldCusto.setColumns(18);
         textFieldCusto.setEditable(true);
+        textFieldCusto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldCustoActionPerformed(evt);
+            }
+        });
         labelCategoria.setText("Categoria do produto:");
         boxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
+        boxCategoria.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                boxCategoriaKeyPressed(evt);
+            }
+        });
         labelMargem.setText("Margem de lucro (%):");
         textFieldMargem.setColumns(18);
         textFieldMargem.setEditable(false);
@@ -223,6 +238,20 @@ public class ProdutoEdicaoDialog extends javax.swing.JDialog implements IProduto
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void textFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldNomeActionPerformed
+        textFieldCusto.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldNomeActionPerformed
+
+    private void textFieldCustoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldCustoActionPerformed
+        boxCategoria.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldCustoActionPerformed
+
+    private void boxCategoriaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_boxCategoriaKeyPressed
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            btnSalvar.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_boxCategoriaKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel dados;

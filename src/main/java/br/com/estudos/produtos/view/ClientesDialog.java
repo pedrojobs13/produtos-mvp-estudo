@@ -111,6 +111,10 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
         btnSalvar.setEnabled(editando);
         btnCancelar.setEnabled(editando);
 
+        if (editando) {
+            textFieldNome.requestFocusInWindow();
+        }
+
         setDefaultCloseOperation(editando ? javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE
                 : javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
@@ -203,10 +207,35 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
         labelTotalCompras.setText("Total de compras:");
 
         textFieldNome.setEditable(false);
+        textFieldNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldNomeActionPerformed(evt);
+            }
+        });
         textFieldLogradouro.setEditable(false);
+        textFieldLogradouro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldLogradouroActionPerformed(evt);
+            }
+        });
         textFieldBairro.setEditable(false);
+        textFieldBairro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldBairroActionPerformed(evt);
+            }
+        });
         textFieldCidade.setEditable(false);
+        textFieldCidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldCidadeActionPerformed(evt);
+            }
+        });
         textFieldUf.setEditable(false);
+        textFieldUf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldUfActionPerformed(evt);
+            }
+        });
         textFieldTipo.setEditable(false);
         textFieldTotalCompras.setEditable(false);
 
@@ -379,6 +408,26 @@ public class ClientesDialog extends javax.swing.JDialog implements IClientesView
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void textFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldNomeActionPerformed
+        textFieldLogradouro.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldNomeActionPerformed
+
+    private void textFieldLogradouroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldLogradouroActionPerformed
+        textFieldBairro.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldLogradouroActionPerformed
+
+    private void textFieldBairroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldBairroActionPerformed
+        textFieldCidade.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldBairroActionPerformed
+
+    private void textFieldCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldCidadeActionPerformed
+        textFieldUf.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldCidadeActionPerformed
+
+    private void textFieldUfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldUfActionPerformed
+        btnSalvar.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldUfActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoes;
