@@ -79,6 +79,16 @@ public class LoginFrame extends javax.swing.JFrame implements ILoginView {
         labelIdentificacao.setText("Usuário ou e-mail:");
         labelSenha.setText("Senha:");
         textFieldIdentificacao.setColumns(20);
+        textFieldIdentificacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldIdentificacaoActionPerformed(evt);
+            }
+        });
+        textFieldSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldSenhaActionPerformed(evt);
+            }
+        });
         btnEntrar.setText("Entrar");
         btnFechar.setText("Fechar");
 
@@ -122,6 +132,14 @@ public class LoginFrame extends javax.swing.JFrame implements ILoginView {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void textFieldIdentificacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldIdentificacaoActionPerformed
+        textFieldSenha.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldIdentificacaoActionPerformed
+
+    private void textFieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldSenhaActionPerformed
+        btnEntrar.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldSenhaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
