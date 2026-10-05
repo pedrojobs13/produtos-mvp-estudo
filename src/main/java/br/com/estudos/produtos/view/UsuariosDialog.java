@@ -64,7 +64,8 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
 
     @Override
     public String getPerfil() {
-        return textFieldPerfil.getText();
+        Object perfil = boxPerfil.getSelectedItem();
+        return perfil == null ? "" : perfil.toString();
     }
 
     @Override
@@ -86,7 +87,7 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         textFieldNomeUsuario.setText(nomeUsuario);
         textFieldSenha.setText("");
         textFieldConfirmaSenha.setText("");
-        textFieldPerfil.setText(perfil);
+        boxPerfil.setSelectedItem(perfil);
         textFieldStatus.setText(status);
         boxCliente.setSelectedItem(cliente);
     }
@@ -122,8 +123,7 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         textFieldNomeUsuario.setEditable(editando);
         textFieldSenha.setEditable(editando);
         textFieldConfirmaSenha.setEditable(editando);
-        textFieldPerfil.setEditable(editando);
-        boxCliente.setEnabled(editando);
+        boxPerfil.setEnabled(editando);
         tableUsuarios.setEnabled(!editando);
 
         btnNovo.setEnabled(!editando);
@@ -135,9 +135,18 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         btnSalvar.setEnabled(editando);
         btnCancelar.setEnabled(editando);
         btnMostrarSenha.setEnabled(editando);
-        btnIncluirCliente.setEnabled(editando);
+        atualizarClientePorPerfil();
         setDefaultCloseOperation(editando ? javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE
                 : javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+
+    private void atualizarClientePorPerfil() {
+        boolean perfilCliente = "CLIENTE".equals(getPerfil());
+        boxCliente.setEnabled(boxPerfil.isEnabled() && perfilCliente);
+        btnIncluirCliente.setEnabled(boxPerfil.isEnabled() && perfilCliente);
+        if (!perfilCliente) {
+            boxCliente.setSelectedItem("");
+        }
     }
 
     @Override
@@ -224,8 +233,9 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         textFieldSenha = new javax.swing.JPasswordField();
         labelConfirmaSenha = new javax.swing.JLabel();
         textFieldConfirmaSenha = new javax.swing.JPasswordField();
+        painelSenhas = new javax.swing.JPanel();
         labelPerfil = new javax.swing.JLabel();
-        textFieldPerfil = new javax.swing.JTextField();
+        boxPerfil = new javax.swing.JComboBox<>();
         labelStatus = new javax.swing.JLabel();
         textFieldStatus = new javax.swing.JTextField();
         labelCliente = new javax.swing.JLabel();
@@ -266,9 +276,35 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         textFieldNomeUsuario.setEditable(false);
         textFieldSenha.setEditable(false);
         textFieldConfirmaSenha.setEditable(false);
-        textFieldPerfil.setEditable(false);
+        boxPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CLIENTE", "ATENDENTE" }));
+        boxPerfil.setEnabled(false);
+        boxPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxPerfilActionPerformed(evt);
+            }
+        });
         textFieldStatus.setEditable(false);
         boxCliente.setEnabled(false);
+
+        javax.swing.GroupLayout painelSenhasLayout = new javax.swing.GroupLayout(painelSenhas);
+        painelSenhas.setLayout(painelSenhasLayout);
+        painelSenhasLayout.setHorizontalGroup(
+            painelSenhasLayout.createSequentialGroup()
+            .addComponent(labelSenha)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(textFieldSenha)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(labelConfirmaSenha)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(textFieldConfirmaSenha)
+        );
+        painelSenhasLayout.setVerticalGroup(
+            painelSenhasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(labelSenha)
+            .addComponent(textFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(labelConfirmaSenha)
+            .addComponent(textFieldConfirmaSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         btnNovo.setText("Novo");
         btnEditar.setText("Editar");
@@ -311,8 +347,6 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
                     .addComponent(labelNome)
                     .addComponent(labelEmail)
                     .addComponent(labelNomeUsuario)
-                    .addComponent(labelSenha)
-                    .addComponent(labelConfirmaSenha)
                     .addComponent(labelPerfil)
                     .addComponent(labelStatus)
                     .addComponent(labelCliente))
@@ -321,9 +355,8 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
                     .addComponent(textFieldNome)
                     .addComponent(textFieldEmail)
                     .addComponent(textFieldNomeUsuario)
-                    .addComponent(textFieldSenha)
-                    .addComponent(textFieldConfirmaSenha)
-                    .addComponent(textFieldPerfil)
+                    .addComponent(painelSenhas)
+                    .addComponent(boxPerfil)
                     .addComponent(textFieldStatus)
                     .addComponent(boxCliente))
                 .addContainerGap())
@@ -344,17 +377,11 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
                     .addComponent(labelNomeUsuario)
                     .addComponent(textFieldNomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(dadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelSenha)
-                    .addComponent(textFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(dadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelConfirmaSenha)
-                    .addComponent(textFieldConfirmaSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(painelSenhas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(dadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelPerfil)
-                    .addComponent(textFieldPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boxPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(dadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelStatus)
@@ -456,8 +483,13 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void boxPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxPerfilActionPerformed
+        atualizarClientePorPerfil();
+    }//GEN-LAST:event_boxPerfilActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxCliente;
+    private javax.swing.JComboBox<String> boxPerfil;
     private javax.swing.JPanel botoes;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnDesabilitar;
@@ -480,12 +512,12 @@ public class UsuariosDialog extends javax.swing.JDialog implements IUsuariosView
     private javax.swing.JLabel labelSenha;
     private javax.swing.JLabel labelStatus;
     private javax.swing.JPanel listagem;
+    private javax.swing.JPanel painelSenhas;
     private javax.swing.JTable tableUsuarios;
     private javax.swing.JPasswordField textFieldConfirmaSenha;
     private javax.swing.JTextField textFieldEmail;
     private javax.swing.JTextField textFieldNome;
     private javax.swing.JTextField textFieldNomeUsuario;
-    private javax.swing.JTextField textFieldPerfil;
     private javax.swing.JPasswordField textFieldSenha;
     private javax.swing.JTextField textFieldStatus;
     // End of variables declaration//GEN-END:variables
