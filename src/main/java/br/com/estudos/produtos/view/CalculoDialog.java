@@ -92,6 +92,11 @@ public class CalculoDialog extends javax.swing.JDialog implements ICalculoView {
         labelData.setText("Data do cálculo (dd/MM/aaaa):");
         textFieldData.setColumns(24);
         textFieldData.setEditable(true);
+        textFieldData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldDataActionPerformed(evt);
+            }
+        });
         btnCalcular.setText("Calcular");
         labelAviso.setText("O cálculo só pode ser realizado novamente após 10 dias.");
         jScrollPane1.setPreferredSize(new java.awt.Dimension(720, 320));
@@ -191,6 +196,10 @@ public class CalculoDialog extends javax.swing.JDialog implements ICalculoView {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void textFieldDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldDataActionPerformed
+        btnCalcular.requestFocusInWindow();
+    }//GEN-LAST:event_textFieldDataActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel filtros;
