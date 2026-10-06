@@ -45,7 +45,12 @@ public class PrincipalFrame extends javax.swing.JFrame implements IPrincipalView
 
     @Override
     public void configurarPerfil(String perfil) {
-        menuUsuarios.setVisible(Usuario.ADMINISTRADOR.equals(perfil));
+        boolean administrador = Usuario.ADMINISTRADOR.equals(perfil);
+        boolean podeAcessarClientes = administrador
+                || Usuario.ATENDENTE.equals(perfil);
+
+        menuUsuarios.setVisible(administrador);
+        menuClientes.setVisible(podeAcessarClientes);
     }
 
     @Override
